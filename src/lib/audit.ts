@@ -1,0 +1,2 @@
+export interface AuditEvent { id:string; type:string; actor:string; at:string; detail:string; }
+export const auditEvents:AuditEvent[]=[{id:"AUD-03417-001",type:"SOURCE_CONFLICT",actor:"fabric",at:"2026-08-11T09:00:00Z",detail:"Turnover variance carried forward for credit review."},{id:"AUD-03417-002",type:"RETRACTION",actor:"K.Rao",at:"2026-08-11T09:01:20Z",detail:"Land-use claim retracted after later revenue record and field inspection."}];

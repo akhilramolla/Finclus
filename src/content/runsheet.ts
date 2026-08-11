@@ -1,0 +1,25 @@
+export interface RunStep { id:string; route:string; title:string; minuteStart:number; minuteEnd:number; presenterNote:string; cue:string; group:string; }
+export const runsheet:RunStep[] = [
+{id:"home",route:"/",title:"Opening and premise",minuteStart:0,minuteEnd:3,presenterNote:"Set the trust frame: this is synthetic, sourced, and human-led.",cue:"Begin with the reliability contract.",group:"Frame"},
+{id:"stack",route:"/frame/stack",title:"The lending stack",minuteStart:3,minuteEnd:6,presenterNote:"Where does your team lose the most time?",cue:"Point to the box where AI belongs.",group:"Frame"},
+{id:"rails",route:"/frame/rails",title:"Rails vs understanding",minuteStart:6,minuteEnd:9,presenterNote:"Rails solve access. What solves understanding?",cue:"Every new data service is a new signal.",group:"Frame"},
+{id:"fabric",route:"/frame/fabric",title:"The intelligence fabric",minuteStart:9,minuteEnd:12,presenterNote:"Reliability comes from architecture, not the model.",cue:"Show the decision-of-record arrow.",group:"Frame"},
+{id:"intent",route:"/borrower/intent",title:"Borrower intent",minuteStart:12,minuteEnd:15,presenterNote:"Start in the borrower's language.",cue:"Consent before data pull.",group:"Borrower"},
+{id:"profile",route:"/borrower/profile",title:"Profile",minuteStart:15,minuteEnd:18,presenterNote:"Five intelligent questions, not a form dump.",cue:"Build the project profile.",group:"Borrower"},
+{id:"options",route:"/borrower/options",title:"Pathways and rule-outs",minuteStart:18,minuteEnd:21,presenterNote:"Ruling things out is the harder capability.",cue:"Show why PMFME and PLISFPI fail.",group:"Borrower"},
+{id:"journey",route:"/borrower/journey",title:"Single-window journey",minuteStart:21,minuteEnd:24,presenterNote:"Dependencies are visible before submission.",cue:"Land conversion blocks two downstream items.",group:"Borrower"},
+{id:"queue",route:"/bank/queue",title:"Credit work queue",minuteStart:24,minuteEnd:26,presenterNote:"Bank software, not a chatbot.",cue:"Open the anchor case.",group:"Bank"},
+{id:"los",route:"/bank/los/03417",title:"LOS pre-screen",minuteStart:26,minuteEnd:29,presenterNote:"Who does what, with what evidence?",cue:"Eight tiles, eight provenance paths.",group:"Bank"},
+{id:"research",route:"/bank/research/03417",title:"Research reveal",minuteStart:29,minuteEnd:33,presenterNote:"Research is decomposed and auditable.",cue:"Run research.",group:"Bank"},
+{id:"appraisal",route:"/bank/appraisal/03417",title:"Credit workbench",minuteStart:33,minuteEnd:38,presenterNote:"AI recommends. The human decides.",cue:"Stress the grant delay.",group:"Bank"},
+{id:"conflict",route:"/bank/conflict/03417",title:"WOW 1: conflict",minuteStart:38,minuteEnd:40,presenterNote:"When sources disagree, what does your system do?",cue:"Refuse to guess.",group:"Bank"},
+{id:"correction",route:"/bank/correction/03417",title:"WOW 2: retraction",minuteStart:40,minuteEnd:43,presenterNote:"The objective is detectable, explainable, correctable.",cue:"Challenge the stale land record.",group:"Bank"},
+{id:"sanction",route:"/bank/sanction/03417",title:"Sanction to CBS and KFS",minuteStart:43,minuteEnd:47,presenterNote:"The same event, two views.",cue:"CBS holds money; fabric holds judgment.",group:"Bank"},
+{id:"lms",route:"/lms/03417",title:"LMS current",minuteStart:47,minuteEnd:48,presenterNote:"Everything is green.",cue:"Now look beyond DPD.",group:"Portfolio"},
+{id:"ews",route:"/portfolio/ews/03417",title:"WOW 3: EWS",minuteStart:48,minuteEnd:51,presenterNote:"Intelligence before default, at SMA-0.",cue:"Reconcile every signal to an assumption.",group:"Portfolio"},
+{id:"cluster",route:"/portfolio/cluster",title:"WOW 4: rural cluster",minuteStart:51,minuteEnd:55,presenterNote:"One sanction produced a village credit cluster.",cue:"Watch 287 colour in.",group:"Portfolio"},
+{id:"lakshmi",route:"/portfolio/lakshmi",title:"Lakshmi dairy case",minuteStart:55,minuteEnd:57,presenterNote:"This changes the arithmetic.",cue:"Repay on milk cycles.",group:"Portfolio"},
+{id:"economics",route:"/economics",title:"Economics",minuteStart:57,minuteEnd:58,presenterNote:"More productive bankers, not fewer bankers.",cue:"Offer to measure the pilot.",group:"Close"},
+{id:"governance",route:"/governance",title:"Governance and MRM",minuteStart:58,minuteEnd:59,presenterNote:"Provenance is a product surface.",cue:"Map the draft guidance.",group:"Close"},
+{id:"close",route:"/close",title:"90-day experiment",minuteStart:59,minuteEnd:60,presenterNote:"If it creates no measurable value, we stop.",cue:"Ask for one state, one bank, one product.",group:"Close"}
+];
