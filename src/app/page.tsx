@@ -1,12 +1,35 @@
-"use client";
 import Link from "next/link";
-import { Keyboard, Play, RotateCcw } from "lucide-react";
-import { runsheet } from "@/content/runsheet";
-import { Shell } from "@/components/presenter/Shell";
-import { useDemoStore } from "@/lib/store";
+import { ArrowRight, Landmark, Presentation, Workflow } from "lucide-react";
 
-export default function Home() {
-  const set = useDemoStore((state) => state.set);
-  const reset = useDemoStore((state) => state.reset);
-  return <Shell><div className="space-y-5"><section className="card overflow-hidden"><div className="grid lg:grid-cols-[1.2fr_.8fr]"><div className="p-7 sm:p-10"><div className="text-xs font-bold uppercase tracking-[.25em] text-violet-700">Presenter control room · 60 minutes</div><h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">Finclus <span className="text-violet-700">—</span><br />Intelligence Fabric</h1><p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">A deterministic, evidence-backed intelligence layer across the Indian lending lifecycle. One synthetic borrower. One continuous story. Human authority stays visible.</p><div className="mt-8 flex flex-wrap gap-3"><button onClick={() => set({ started: true, current: 1 })} className="inline-flex items-center gap-2 rounded bg-blue-700 px-5 py-3 font-bold text-white hover:bg-blue-800"><Play size={18} /> Begin at frame</button><button onClick={reset} className="inline-flex items-center gap-2 rounded border border-slate-300 px-5 py-3 font-bold hover:border-slate-500"><RotateCcw size={18} /> Reset</button><Link href="/runsheet" className="rounded border border-slate-300 px-5 py-3 font-bold hover:border-slate-500">Open run sheet</Link></div></div><div className="border-t border-slate-200 bg-slate-50 p-7 lg:border-l lg:border-t-0 sm:p-10"><div className="text-xs font-bold uppercase tracking-[.2em] text-slate-500">The thesis</div><p className="mt-5 text-2xl font-bold leading-tight text-slate-900">The core records what happened. The fabric understands why. The human decides.</p><div className="mt-8 space-y-3 text-sm"><div className="flex items-center gap-3"><span className="h-3 w-3 rounded-full bg-blue-700" />Systems of record</div><div className="flex items-center gap-3"><span className="h-3 w-3 rounded-full bg-violet-700" />Evidence, agents, research</div><div className="flex items-center gap-3"><span className="h-3 w-3 rounded-full bg-teal-700" />Human authority</div></div></div></div></section><div className="grid gap-5 lg:grid-cols-[1fr_1fr]"><section className="card p-6"><div className="flex items-center gap-2 text-sm font-bold"><Keyboard size={17} /> Keyboard-first control</div><div className="mt-4 grid grid-cols-2 gap-2 text-sm text-slate-600">{[["→ / Space", "Next"], ["←", "Back"], ["G", "Governance"], ["P", "Presenter notes"], ["R", "Reset"], ["S", "Scale"]].map(([key, label]) => <div className="rounded bg-slate-50 px-3 py-2" key={key}><b className="tabnums text-slate-900">{key}</b><span className="ml-2">{label}</span></div>)}</div></section><section className="card p-6"><div className="flex items-center justify-between"><div><div className="text-xs font-bold uppercase tracking-widest text-slate-500">Run order</div><h2 className="mt-1 text-xl font-bold">Start with the frame</h2></div><Link href="/facts" className="text-sm font-bold text-violet-700 hover:underline">Fact registry →</Link></div><div className="mt-4 grid gap-2 sm:grid-cols-3">{runsheet.slice(1, 4).map((step) => <Link href={step.route} key={step.id} className="rounded border border-slate-200 p-3 hover:border-violet-300"><div className="tabnums text-xs text-slate-500">{step.minuteStart}–{step.minuteEnd} min</div><div className="mt-1 text-sm font-bold">{step.title}</div></Link>)}</div></section></div><div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950"><b>Trust frame:</b> simulated workshop demo · synthetic borrower · no live RBIH, ULI or AA call · every fact is sourced and labelled.</div></div></Shell>;
+export default function VersionHome() {
+  return <main className="min-h-screen bg-[#e9edf4] p-5 sm:p-10">
+    <div className="mx-auto max-w-6xl">
+      <header className="flex items-center justify-between border-b border-slate-300 pb-5">
+        <div><div className="text-xl font-black tracking-tight">FINCLUS<span className="text-violet-700">.</span></div><div className="text-[10px] font-bold uppercase tracking-[.24em] text-slate-500">Intelligence Fabric</div></div>
+        <div className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-bold text-slate-600">SIMULATED WORKSHOP ENVIRONMENT</div>
+      </header>
+      <section className="grid min-h-[calc(100vh-150px)] items-center gap-10 py-10 lg:grid-cols-[.9fr_1.1fr]">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-[.24em] text-violet-700">Choose the experience</div>
+          <h1 className="mt-4 text-balance text-4xl font-black tracking-[-.04em] text-slate-950 sm:text-6xl">One lending fabric.<br/>Two ways to inspect it.</h1>
+          <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">Use the workshop to understand the thesis. Use the product workspace to operate the same case from application to rural origination.</p>
+          <div className="mt-7 flex items-center gap-3 text-sm text-slate-600"><Landmark size={18} className="text-blue-700"/>Sri Annapurna Foods · Chittoor · one continuous synthetic case</div>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Link href="/1" className="group rounded-xl border border-slate-300 bg-white p-6 transition-transform duration-200 hover:-translate-y-1 hover:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-600">
+            <div className="flex items-center justify-between"><span className="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-700"><Presentation size={22}/></span><span className="tabnums text-3xl font-black text-slate-200">01</span></div>
+            <h2 className="mt-8 text-2xl font-black">Workshop Demo</h2>
+            <p className="mt-3 min-h-24 text-sm leading-6 text-slate-600">The current 60-minute presenter-led story, regulatory frame, borrower journey, four governed reveals and pilot close.</p>
+            <span className="mt-8 inline-flex items-center gap-2 font-bold text-blue-700">Open Version 1 <ArrowRight size={17} className="transition-transform group-hover:translate-x-1"/></span>
+          </Link>
+          <Link href="/2" className="group rounded-xl border border-slate-800 bg-slate-950 p-6 text-white transition-transform duration-200 hover:-translate-y-1 hover:border-violet-400 focus-visible:ring-2 focus-visible:ring-violet-400">
+            <div className="flex items-center justify-between"><span className="flex h-11 w-11 items-center justify-center rounded-lg bg-violet-500/15 text-violet-300"><Workflow size={22}/></span><span className="tabnums text-3xl font-black text-slate-700">02</span></div>
+            <h2 className="mt-8 text-2xl font-black">Product Workspace</h2>
+            <p className="mt-3 min-h-24 text-sm leading-6 text-slate-300">An operational credit workspace where each next screen follows a banker action: queue, appraisal, sanction, EWS and cluster origination.</p>
+            <span className="mt-8 inline-flex items-center gap-2 font-bold text-violet-300">Open Version 2 <ArrowRight size={17} className="transition-transform group-hover:translate-x-1"/></span>
+          </Link>
+        </div>
+      </section>
+    </div>
+  </main>;
 }
