@@ -1,0 +1,14 @@
+"use client";
+
+import { useState } from "react";
+import { FileText, Printer, Zap } from "lucide-react";
+import { camSections } from "@/content/cam";
+import { useDemoStore } from "@/lib/store";
+
+export function CamDocument() {
+  const [generated, setGenerated] = useState(false);
+  const [active, setActive] = useState(camSections[0].id);
+  return <section className="card overflow-hidden"><div className="no-print flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 p-4"><div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-violet-700"><FileText size={15} /> Credit appraisal memo</div><h3 className="mt-1 text-lg font-bold">CAM · 17 sections · evidence attached inline</h3></div><div className="flex gap-2"><button onClick={() => setGenerated(true)} className="inline-flex items-center gap-2 rounded bg-violet-700 px-3 py-2 text-sm font-bold text-white">{generated ? "Generated" : "Generate CAM"}<Zap size={15} /></button><button onClick={() => window.print()} className="inline-flex items-center gap-2 rounded border border-slate-300 bg-white px-3 py-2 text-sm font-bold"><Printer size={15} /> Print</button></div></div><div className="grid md:grid-cols-[205px_1fr]"><nav className="no-print border-b border-slate-200 p-2 md:border-b-0 md:border-r">{camSections.map((section, index) => <button key={section.id} onClick={() => setActive(section.id)} className={`mb-1 w-full rounded px-2 py-1.5 text-left text-xs font-semibold ${section.id === active ? "bg-blue-50 text-blue-800" : "text-slate-600 hover:bg-slate-50"}`}>{String(index + 1).padStart(2, "0")} · {section.title}</button>)}</nav><div className="min-h-[420px] p-5">{camSections.filter(section => section.id === active).map(section => <article key={section.id}><div className="text-xs font-bold uppercase tracking-widest text-slate-500">Section {String(camSections.indexOf(section) + 1).padStart(2, "0")}</div><h4 className="mt-2 text-2xl font-bold">{section.title}</h4><p className="mt-4 max-w-3xl text-base leading-7 text-slate-700">{section.body}</p><EvidenceChip evidence={section.evidence} /></article>)}{generated && <div className="mt-8 border-t border-emerald-200 pt-4 text-sm font-semibold text-emerald-700">CAM generated deterministically from the current evidence state · ready for maker-checker review.</div>}</div></div></section>;
+}
+
+function EvidenceChip({ evidence }: { evidence: { source: string; artefact: string; timestamp: string } }) { const set = useDemoStore(s => s.set); return <button onClick={() => set({ governance: true })} title={`${evidence.source} · ${evidence.artefact}`} className="mt-6 inline-flex flex-wrap items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-left text-xs font-semibold text-emerald-900"><span className="status-dot" /> Evidence · {evidence.source} · {evidence.artefact} · {evidence.timestamp}</button>; }

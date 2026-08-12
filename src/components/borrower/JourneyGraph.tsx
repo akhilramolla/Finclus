@@ -1,0 +1,14 @@
+import {ArrowDown, CheckCircle2, Clock3, LockKeyhole, Zap} from "lucide-react";
+import {Fact} from "@/components/governance/Fact";
+
+const nodes = [
+  {id: "land", title: "Land-use conversion", body: "Pending · blocks building approval + subsidy claim", state: "blocked"},
+  {id: "building", title: "Building approval", body: "Starts after land conversion", state: "waiting"},
+  {id: "electric", title: "HT electricity load", body: "Can run in parallel", state: "parallel"},
+  {id: "fssai", title: "FSSAI + food approvals", body: "Can run in parallel", state: "parallel"},
+  {id: "bank", title: "Bank finance", body: "Proceed now, subject to CPs", state: "human"}
+] as const;
+
+export function JourneyGraph({telugu = false}: {telugu?: boolean}) {
+  return <section><p className="mb-2 text-[10px] font-black uppercase tracking-[.2em] text-violet-700">{telugu ? "ఒకే విండో ప్రయాణం" : "SINGLE-WINDOW JOURNEY"}</p><h1 className="text-[26px] font-black leading-tight text-slate-950">{telugu ? "ఏ పని ముందు చేయాలో స్పష్టంగా" : "See the dependencies before you apply."}</h1><p className="mt-2 text-xs leading-5 text-slate-600">{telugu ? "ఆగిపోయే పనులను ముందే చూపిస్తాము." : "One queue for the borrower, visible dependencies for the bank."} <Fact id="ap.singledesk"/></p><div className="mt-5 rounded-2xl border border-slate-200 bg-white p-4"><div className="mb-4 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400"><span>Project graph</span><span className="tabnums">5 workstreams</span></div><div className="space-y-2">{nodes.map((node, index) => <div key={node.id}><div className={`flex items-start gap-3 rounded-xl border p-3 ${node.state === "blocked" ? "border-red-200 bg-red-50" : node.state === "human" ? "border-teal-200 bg-teal-50" : node.state === "parallel" ? "border-blue-200 bg-blue-50" : "border-slate-200 bg-slate-50"}`}><div className="mt-0.5 shrink-0">{node.state === "blocked" ? <LockKeyhole className="h-4 w-4 text-red-600"/> : node.state === "parallel" ? <Zap className="h-4 w-4 text-blue-700"/> : node.state === "human" ? <CheckCircle2 className="h-4 w-4 text-teal-700"/> : <Clock3 className="h-4 w-4 text-slate-500"/>}</div><div><p className="text-sm font-bold text-slate-900">{node.title}</p><p className="mt-1 text-xs leading-4 text-slate-600">{node.body}</p></div></div>{index < nodes.length - 1 && <div className="flex h-4 items-center justify-center"><ArrowDown className="h-3 w-3 text-slate-400"/></div>}</div>)}</div><div className="mt-4 border-t border-dashed border-slate-200 pt-3 text-xs font-bold text-slate-700">{telugu ? "భూమి మార్పిడి అనుమతి రెండు పనులను ఆపుతుంది; విద్యుత్ మరియు FSSAI సమాంతరంగా సాగుతాయి." : "Land conversion blocks two downstream items. Electricity and FSSAI run in parallel. Finance proceeds subject to conditions precedent."}</div></div></section>;
+}
