@@ -77,4 +77,39 @@ test("version switch preserves mapped context",async({page})=>{
   await page.getByRole("navigation",{name:"Experience version"}).getByRole("link",{name:"1"}).click(); await expect(page).toHaveURL(`${baseURL}/1/bank/queue`);
   await page.getByRole("navigation",{name:"Experience version"}).getByRole("link",{name:"3"}).click(); await expect(page).toHaveURL(/\/(3|aif-swarm)/);
 });
-
+
+test("Version 3 guided path preserves the human decision hold",async({page})=>{
+  test.setTimeout(120_000); const issues=diagnostics(page);
+  await page.goto(`${baseURL}/3`);
+  await page.getByRole("button",{name:"Guided demo · 8 min"}).click();
+  await page.locator(".target").click();
+  await page.getByRole("button",{name:/Start investigation/}).click();
+  await page.getByRole("button",{name:/Run 7 workstreams/}).click();
+  await expect(page.getByRole("button",{name:"Open critical evidence"})).toBeVisible({timeout:10_000});
+  await page.getByRole("button",{name:"Open critical evidence"}).click();
+  await page.getByRole("button",{name:"Close"}).click();
+  await page.getByRole("button",{name:"Input cost +8%"}).click();
+  await expect(page.locator(".ratio-hero b")).toHaveText("1.21×");
+  await page.getByRole("button",{name:"Open decision state"}).click();
+  await expect(page.getByRole("button",{name:"Recommend sanction"})).toBeDisabled();
+  await page.getByRole("button",{name:"Refer to FCU"}).click();
+  await page.getByRole("button",{name:"Close with pilot"}).click();
+  await page.getByRole("button",{name:"Record pilot scope"}).click();
+  await expect(page.getByText("Complete",{exact:true})).toBeVisible();
+  await noOverflow(page); expect(issues).toEqual([]);
+});
+
+test("Version 3 policy workspace has rules, sources, and history",async({page})=>{
+  const issues=diagnostics(page); await page.goto(`${baseURL}/3`);
+  await page.getByRole("button",{name:"Schemes & policies"}).click();
+  await expect(page.getByRole("heading",{name:"Schemes & policies"})).toBeVisible();
+  await expect(page.locator(".rule-row")).toHaveCount(6);
+  await page.getByRole("button",{name:"Source registry"}).click();
+  await expect(page.getByText("Policy source registry")).toBeVisible();
+  await page.getByRole("button",{name:"Change history"}).click();
+  await expect(page.locator(".change-row")).toHaveCount(4);
+  await expect(page.getByRole("button",{name:"Review queue"})).toBeDisabled();
+  await expect(page.getByRole("button",{name:"Monitoring"})).toBeDisabled();
+  await noOverflow(page); expect(issues).toEqual([]);
+});
+
