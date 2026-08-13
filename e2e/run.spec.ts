@@ -75,4 +75,6 @@ test("Version 2 operates from application to rural origination",async({page})=>{
 test("version switch preserves mapped context",async({page})=>{
   await page.goto(`${baseURL}/1/bank/queue`); await page.getByRole("navigation",{name:"Experience version"}).getByRole("link",{name:"2"}).click(); await expect(page).toHaveURL(`${baseURL}/2/work-queue`);
   await page.getByRole("navigation",{name:"Experience version"}).getByRole("link",{name:"1"}).click(); await expect(page).toHaveURL(`${baseURL}/1/bank/queue`);
+  await page.getByRole("navigation",{name:"Experience version"}).getByRole("link",{name:"3"}).click(); await expect(page).toHaveURL(/\/(3|aif-swarm)/);
 });
+

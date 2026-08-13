@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finclus · 3 · AIF Agent Swarm (27 agents)</title>
+<style>
+:root{
+  --bg:#05080f;--s1:#0a0f1c;--s2:#0f1930;--s3:#152442;
+  --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.15);
+  --tx:#eaf0fb;--mut:#8ea0bd;--mut2:#5e6b82;
+  --fab:#8b5cf6;--fab2:#a78bfa;--cyan:#22d3ee;--green:#34d399;--amber:#fbbf24;--red:#fb7185;--blue:#60a5fa;
+  --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;--r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:13px;line-height:1.5;display:flex;height:100vh;overflow:hidden}
+.mono{font-family:var(--mono)}.muted{color:var(--mut)}.muted2{color:var(--mut2)}
+/* sidebar */
+.sidebar{width:270px;background:var(--s1);border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;height:100vh}
+.brand{font-size:18px;font-weight:800;padding-bottom:8px;margin-bottom:4px}
+.brand span{color:var(--fab)}
+.brand .b100{display:inline-block;font-size:10px;font-weight:700;color:var(--green);background:rgba(52,211,153,.15);padding:2px 7px;border-radius:999px;margin-left:4px}
+.brand .sub{font-size:10.5px;font-weight:400;color:var(--mut);display:block;margin-top:3px}
+.navsec{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut2);margin:14px 8px 5px}
+.nav-item{padding:8px 11px;border-radius:8px;cursor:pointer;transition:.15s;border:1px solid transparent;font-size:12px;font-weight:500;color:var(--mut);margin-bottom:2px;display:flex;align-items:center;gap:9px}
+.nav-item:hover{background:var(--s2);color:#fff}
+.nav-item.active{background:var(--s2);border-color:var(--fab);color:#fff}
+.nav-item .ic{font-size:14px;width:20px;text-align:center}
+.nav-item .bd{margin-left:auto;font-size:9px;background:var(--s2);padding:1px 6px;border-radius:10px;color:var(--mut)}
+.nav-item.active .bd{background:var(--fab);color:#fff}
+.sidebar-footer{margin-top:auto;font-size:9.5px;color:var(--mut2);padding-top:14px;border-top:1px solid var(--line);line-height:1.8}
+.sidebar-footer b{color:var(--mut)}
+/* main */
+.main{flex:1;padding:26px 36px;overflow-y:auto;height:100vh}
+.screen{display:none;animation:fade .35s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:25px;font-weight:750;letter-spacing:-.3px;margin-bottom:4px}
+.eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--fab2);font-weight:600;margin-bottom:6px}
+.sub{color:var(--mut);font-size:13.5px;margin-bottom:20px}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.card-title{font-weight:700;font-size:13px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.g12{display:grid;grid-template-columns:1fr 2fr;gap:14px}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.chip{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;text-transform:uppercase;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.chip.green{background:rgba(52,211,153,.15);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+.chip.amber{background:rgba(251,191,36,.15);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+.chip.red{background:rgba(251,113,133,.15);color:var(--red);border:1px solid rgba(251,113,133,.3)}
+.chip.purple{background:rgba(139,92,246,.15);color:var(--fab);border:1px solid rgba(139,92,246,.3)}
+.chip.cyan{background:rgba(34,211,238,.15);color:var(--cyan);border:1px solid rgba(34,211,238,.3)}
+.chip.blue{background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line2);color:var(--mut)}
+.kv{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line);font-size:12px;gap:10px}
+.kv:last-child{border:none}.kv .k{color:var(--mut)}.kv .v{font-weight:650;text-align:right}
+.btn{background:var(--s2);border:1px solid var(--line2);color:var(--tx);padding:8px 15px;border-radius:8px;font-weight:600;font-size:12px;cursor:pointer;transition:.15s;font-family:inherit}
+.btn:hover{background:var(--fab);border-color:var(--fab);color:#fff}
+.btn.primary{background:var(--fab);border-color:var(--fab);color:#fff}
+.btn.primary:hover{filter:brightness(1.12)}
+.btn.sm{padding:5px 10px;font-size:11px}
+.btn.on{background:var(--fab);border-color:var(--fab);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.trace{font-family:var(--mono);font-size:11px;background:#04060c;border-radius:8px;padding:12px;min-height:220px;max-height:400px;overflow-y:auto;border:1px solid var(--line);color:#b7c4dc;line-height:1.75;margin-top:10px}
+.trace .l{opacity:0;animation:fi .3s forwards;display:flex;gap:8px}
+.trace .l .ph{color:var(--mut2);flex-shrink:0;width:52px}
+.trace .l .tg{color:var(--cyan);flex-shrink:0;width:118px}
+.trace .l.warn .tm{color:var(--amber)}
+.trace .l.stop .tm{color:var(--red);font-weight:700}
+.trace .l.done .tm{color:var(--green)}
+.trace .l.big .tm{color:var(--fab2);font-weight:700}
+@keyframes fi{to{opacity:1}}
+.progress{height:6px;border-radius:6px;background:var(--s2);overflow:hidden;margin:4px 0}
+.progress i{display:block;height:100%;border-radius:6px}
+.agrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.acard{background:var(--s1);border:1px solid var(--line);border-radius:9px;padding:10px 11px;font-size:11.5px;transition:.2s;position:relative;overflow:hidden}
+.acard .an{font-weight:700;font-size:12px;color:var(--tx)}
+.acard .af{color:var(--mut);font-size:10.5px;margin-top:2px;line-height:1.35}
+.acard .at{font-size:9px;color:var(--mut2);margin-top:5px;font-family:var(--mono)}
+.acard .num{position:absolute;top:8px;right:9px;font-family:var(--mono);font-size:10px;color:var(--mut2)}
+.acard .st{margin-top:6px;display:flex;gap:5px;align-items:center}
+.acard.run{border-color:var(--fab);box-shadow:0 0 0 1px var(--fab)}
+.acard.ok{border-color:rgba(52,211,153,.35)}
+.phase-hdr{display:flex;align-items:center;gap:10px;margin:16px 0 8px}
+.phase-hdr .pn{font-family:var(--mono);font-size:11px;color:var(--fab2);font-weight:700}
+.phase-hdr .pt{font-weight:700;font-size:13px}
+.phase-hdr .pl{margin-left:auto;font-size:10px;color:var(--mut2);font-family:var(--mono)}
+.phase-hdr:before{content:"";flex:0 0 3px;height:16px;background:var(--fab);border-radius:2px}
+table.tb{width:100%;border-collapse:collapse;font-size:11.5px}
+table.tb th{text-align:left;font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut2);padding:7px 9px;border-bottom:1px solid var(--line2)}
+table.tb td{padding:7px 9px;border-bottom:1px solid var(--line);color:#c9d4e6;vertical-align:top}
+table.tb td b{color:var(--tx)}
+table.tb tr:hover td{background:var(--s1)}
+.hl{border-left:3px solid var(--fab);padding-left:12px;background:rgba(139,92,246,.06);border-radius:0 8px 8px 0}
+.wf{border:2px solid var(--red);border-radius:10px;padding:14px;background:rgba(251,113,133,.06)}
+.gauge{--v:0;--gc:var(--fab);width:78px;height:78px;border-radius:50%;background:conic-gradient(var(--gc) calc(var(--v)*1%),#182338 0);display:grid;place-items:center;margin:4px auto}
+.gauge .in{width:60px;height:60px;border-radius:50%;background:var(--s1);display:grid;place-items:center;font-size:18px;font-weight:800}
+.stat{text-align:center;padding:14px}
+.stat .n{font-size:26px;font-weight:800}
+.stat .l{font-size:10.5px;color:var(--mut);margin-top:3px}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}
+.bar{display:flex;align-items:center;gap:9px;padding:4px 0;font-size:11px}
+.bar .lbl{min-width:150px;color:var(--mut)}
+.bar .tr{flex:1;height:8px;border-radius:6px;background:var(--s2);overflow:hidden}
+.bar .tr i{display:block;height:100%;border-radius:6px}
+.bar .val{min-width:78px;text-align:right;font-weight:650;font-family:var(--mono);font-size:11px}
+.memo-sec{padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;font-size:12px}
+.memo-sec .n{font-family:var(--mono);color:var(--mut2);width:24px;flex-shrink:0}
+.memo-sec .t{flex:1}
+.phone{background:#04060c;border:7px solid #0a0f1c;border-radius:32px;max-width:300px;overflow:hidden}
+.phone .pin{background:var(--s1);padding:12px 14px;min-height:400px}
+@media(max-width:1150px){.sidebar{width:76px}.brand span,.brand .sub,.brand .b100{display:none}.nav-item .bd,.nav-item .lb{display:none}.navsec{display:none}.sidebar-footer{display:none}}
+@media(max-width:900px){.grid2,.grid3,.grid4,.g12,.g21{grid-template-columns:1fr}.agrid{grid-template-columns:1fr 1fr}.main{padding:16px}}
+/* ===== PRODUCTION LOS CHROME (v2 realism layer) ===== */
+.app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.row{display:flex;flex:1;min-height:0}
+.sidebar{height:100%!important}
+.main{flex:1;height:100%;overflow:hidden;display:flex;flex-direction:column;min-width:0;padding:0!important}
+.maincontent{flex:1;overflow-y:auto;padding:20px 30px}
+.topbar{height:52px;flex-shrink:0;background:linear-gradient(180deg,#0b1220,#080d16);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:13px;padding:0 16px}
+.topbar .logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--fab),#6d28d9);display:grid;place-items:center;font-size:13px;color:#fff;box-shadow:0 2px 12px rgba(139,92,246,.45)}
+.topbar .bk{font-weight:800;font-size:13.5px;letter-spacing:-.2px;line-height:1.15}
+.topbar .bk small{display:block;font-size:8.5px;font-weight:500;color:var(--mut);letter-spacing:.03em}
+.topbar .crumb{font-size:10.5px;color:var(--mut);font-family:var(--mono)}.topbar .crumb b{color:var(--tx)}
+.topbar .env{margin-left:auto;font-size:9px;font-weight:700;color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);padding:3px 9px;border-radius:999px;display:flex;align-items:center;gap:5px}
+.topbar .env .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.topbar .tbtn{font-size:10.5px;color:var(--mut);background:var(--s2);border:1px solid var(--line);padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:5px;transition:.15s;white-space:nowrap}
+.topbar .tbtn:hover{color:#fff;border-color:var(--fab)}
+.topbar .bell{position:relative;cursor:pointer;font-size:15px}
+.topbar .bell .cnt{position:absolute;top:-5px;right:-6px;background:var(--red);color:#fff;font-size:8px;font-weight:800;padding:1px 4px;border-radius:999px}
+.topbar .rm{display:flex;align-items:center;gap:8px}
+.topbar .rm .av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#2b3a5e,#0f1930);display:grid;place-items:center;font-size:10px;font-weight:800;border:1px solid var(--line2)}
+.topbar .rm .nm{font-size:10.5px;font-weight:700;line-height:1.15}.topbar .rm .rl{font-size:8.5px;color:var(--mut)}
+.casebar{flex-shrink:0;background:var(--s1);border-bottom:1px solid var(--line);padding:11px 30px}
+.casebar .cbtop{display:flex;align-items:center;gap:13px}
+.casebar .av{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#1c6e7a,#0f1930);display:grid;place-items:center;font-size:15px;font-weight:800;flex-shrink:0}
+.casebar .nm{font-size:14.5px;font-weight:800}
+.casebar .cmeta{font-size:10px;color:var(--mut);font-family:var(--mono);margin-top:1px}
+.casebar .amt{margin-left:auto;text-align:right}.casebar .amt .a{font-size:16px;font-weight:800;color:var(--cyan)}.casebar .amt .l{font-size:9px;color:var(--mut)}
+.casebar .sla{text-align:right;padding-left:16px;margin-left:16px;border-left:1px solid var(--line)}.casebar .sla .a{font-size:14px;font-weight:800;color:var(--green)}.casebar .sla .l{font-size:9px;color:var(--mut)}
+.stepper{display:flex;align-items:center;margin-top:10px}
+.stepper .st{display:flex;align-items:center;gap:6px}
+.stepper .st .dot{width:19px;height:19px;border-radius:50%;background:var(--s2);border:1px solid var(--line2);display:grid;place-items:center;font-size:8.5px;font-weight:800;color:var(--mut);flex-shrink:0}
+.stepper .st.done .dot{background:var(--green);border-color:var(--green);color:#04140d}
+.stepper .st.cur .dot{background:var(--fab);border-color:var(--fab);color:#fff;box-shadow:0 0 0 3px rgba(139,92,246,.25)}
+.stepper .st .lb{font-size:10px;font-weight:600;color:var(--mut);white-space:nowrap}
+.stepper .st.done .lb,.stepper .st.cur .lb{color:var(--tx)}
+.stepper .ln{flex:1;height:2px;background:var(--line2);margin:0 6px}.stepper .ln.done{background:var(--green)}
+.ev{color:var(--cyan);cursor:pointer;border-bottom:1px dotted rgba(34,211,238,.5)}
+.ev:hover{color:#7fe9f7;border-bottom-style:solid}
+.ev:before{content:"🔗";font-size:8px;opacity:.7;margin-right:2px}
+.overlay{position:fixed;inset:0;background:rgba(2,4,10,.62);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.overlay.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100vh;width:520px;max-width:93vw;background:var(--s1);border-left:1px solid var(--line2);box-shadow:-24px 0 70px rgba(0,0,0,.55);transform:translateX(102%);transition:transform .28s cubic-bezier(.4,0,.2,1);z-index:90;overflow-y:auto;padding:20px 22px}
+.drawer.on{transform:translateX(0)}
+.drawer .dh{display:flex;align-items:center;gap:10px;padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.drawer .dh .dt2{font-weight:800;font-size:14px}.drawer .dh .ds{font-size:10px;color:var(--mut)}
+.drawer .dh .x{margin-left:auto;cursor:pointer;color:var(--mut);font-size:22px;line-height:1}.drawer .dh .x:hover{color:#fff}
+.doc{background:#fbfcfe;color:#0b1220;border-radius:10px;padding:15px 17px;font-family:var(--mono);font-size:11px;line-height:1.65;border:1px solid #d5deea;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.doc .dt{font-family:-apple-system,"Segoe UI",sans-serif;font-weight:800;font-size:13px;color:#0b1220;margin-bottom:2px;display:flex;align-items:center;gap:7px}
+.doc .src{font-family:-apple-system,sans-serif;font-size:9px;color:#5a6b86;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #e3e9f2}
+.doc .rowd{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e3e9f2;gap:12px}
+.doc .rowd .kd{color:#5a6b86}.doc .rowd .vd{font-weight:700;text-align:right}
+.doc .verified{display:inline-flex;align-items:center;gap:4px;background:#e7f6ec;color:#1b7a43;font-weight:800;font-size:9px;padding:2px 8px;border-radius:999px;border:1px solid #a7e0bd}
+.doc .flagd{background:#fdece6;color:#b4451f;border-color:#f2c3ac}
+.prov{font-size:10px;color:var(--mut);margin-top:12px;background:var(--s2);border-radius:8px;padding:10px 12px;font-family:var(--mono);line-height:1.7}.prov b{color:var(--cyan)}
+.doclist{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.doclist .di{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--s2);border:1px solid var(--line);border-radius:8px;cursor:pointer;transition:.15s;font-size:12px}
+.doclist .di:hover{border-color:var(--fab);background:var(--s3)}
+.doclist .di .ic{font-size:15px}.doclist .di .dn{font-weight:600}.doclist .di .dm{font-size:9.5px;color:var(--mut);margin-top:1px}
+.doclist .di .st2{margin-left:auto}
+.audit .ar{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10px}
+.audit .ar .ts{color:var(--mut2);flex-shrink:0;width:56px}
+.audit .ar .ag{color:var(--cyan);flex-shrink:0;width:92px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.audit .ar .msg{color:#c9d4e6;flex:1}.audit .ar.warn .msg{color:var(--amber)}.audit .ar.stop .msg{color:var(--red);font-weight:700}
+.audit .ar .hs{color:var(--mut2);font-size:8.5px;flex-shrink:0}
+.emi{width:100%;border-collapse:collapse;font-size:10.5px;font-family:var(--mono)}
+.emi th{text-align:right;color:var(--mut2);font-size:9px;text-transform:uppercase;letter-spacing:.04em;padding:5px 8px;border-bottom:1px solid var(--line2)}
+.emi th:first-child{text-align:left}
+.emi td{text-align:right;padding:5px 8px;border-bottom:1px solid var(--line);color:#c9d4e6}
+.emi td:first-child{text-align:left;color:var(--mut)}
+.emi tr.mora td{color:var(--amber)}
+.trrow{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:11px}
+.trrow .tl{min-width:130px;color:var(--mut)}
+.trrow .tbar{flex:1;height:24px;background:var(--s2);border-radius:5px;position:relative;overflow:hidden;border:1px solid var(--line)}
+.trrow .tbar i{position:absolute;top:0;height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:9px;font-weight:700}
+.mc{display:flex;gap:9px;align-items:stretch;margin-top:6px}
+.mc .mstep{flex:1;background:var(--s2);border:1px solid var(--line);border-radius:10px;padding:11px;text-align:center}
+.mc .mstep.done{border-color:rgba(52,211,153,.4)}.mc .mstep.cur{border-color:var(--fab);box-shadow:0 0 0 1px var(--fab)}
+.mc .mstep .role{font-size:8.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut2)}
+.mc .mstep .who{font-weight:800;font-size:12.5px;margin:3px 0}
+.mc .mstep .stt{font-size:9.5px}
+.mc .marrow{align-self:center;color:var(--mut2);font-size:15px}
+.toastwrap{position:fixed;bottom:16px;right:16px;z-index:100;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--s1);border:1px solid var(--line2);border-left:3px solid var(--fab);border-radius:9px;padding:10px 14px;font-size:11.5px;box-shadow:0 10px 34px rgba(0,0,0,.55);animation:slidein .3s ease;max-width:330px}
+.toast b{color:var(--fab2)}
+@keyframes slidein{from{transform:translateX(44px);opacity:0}to{transform:translateX(0);opacity:1}}
+.card:hover{border-color:var(--line2)}
+.acard .ahelp{margin-top:5px;font-size:10px;color:var(--green);font-style:italic;line-height:1.35;border-top:1px solid var(--line);padding-top:5px}
+.bcard{padding:10px;background:var(--s2);border:1px solid var(--line);border-radius:8px}
+.bigrule{text-align:center;background:linear-gradient(180deg,rgba(139,92,246,.12),transparent);border:1px solid rgba(139,92,246,.35);border-radius:12px;padding:18px}
+
+/* ===== BEAUTIFY v3 ===== */
+.card:hover{border-color:var(--line2);transform:translateY(-1px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.card.highlight,.highlight{border-left:3px solid var(--fab);padding-left:12px;background:rgba(139,92,246,.06);border-radius:0 8px 8px 0}
+body{background:
+  radial-gradient(1200px 600px at 10% -10%, rgba(139,92,246,.18), transparent 55%),
+  radial-gradient(900px 500px at 100% 0%, rgba(34,211,238,.10), transparent 50%),
+  radial-gradient(800px 400px at 50% 100%, rgba(52,211,153,.06), transparent 45%),
+  var(--bg)}
+.topbar{backdrop-filter:blur(14px);background:linear-gradient(180deg,rgba(11,18,32,.92),rgba(8,13,22,.88))!important;box-shadow:0 1px 0 rgba(255,255,255,.04)}
+.sidebar{background:linear-gradient(180deg,rgba(10,15,28,.98),rgba(7,11,20,.99));box-shadow:inset -1px 0 0 rgba(255,255,255,.04)}
+.nav-item.active{background:linear-gradient(90deg,rgba(139,92,246,.22),rgba(139,92,246,.06));box-shadow:inset 3px 0 0 var(--fab)}
+.casebar{background:linear-gradient(180deg,rgba(15,25,48,.95),rgba(10,15,28,.98));backdrop-filter:blur(10px)}
+.card{background:linear-gradient(165deg,rgba(15,25,48,.92),rgba(10,15,28,.88));box-shadow:0 4px 24px rgba(0,0,0,.2);transition:border-color .2s,transform .2s,box-shadow .2s}
+.acard{background:linear-gradient(160deg,rgba(15,25,48,.9),rgba(8,12,22,.95));transition:transform .2s,border-color .2s,box-shadow .2s}
+.acard:hover{transform:translateY(-2px);border-color:rgba(139,92,246,.35);box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.acard.run{animation:agentPulse 1.2s ease infinite}
+.acard.ok{background:linear-gradient(160deg,rgba(12,40,32,.55),rgba(10,15,28,.9))}
+@keyframes agentPulse{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.45)}50%{box-shadow:0 0 0 6px rgba(139,92,246,0)}}
+.btn.primary{background:linear-gradient(135deg,#8b5cf6,#6d28d9);box-shadow:0 6px 20px rgba(139,92,246,.35)}
+.btn.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.trace{background:linear-gradient(180deg,#03050a,#060a14);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.drawer{background:linear-gradient(180deg,#0c1424,#080d16)}
+.gauge{box-shadow:0 0 0 1px rgba(255,255,255,.06),0 8px 24px rgba(0,0,0,.35)}
+h1{background:linear-gradient(120deg,#fff 30%,#c4b5fd 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.version-switch{display:inline-flex;border-radius:9px;border:1px solid var(--line2);padding:2px;background:rgba(0,0,0,.25);gap:2px}
+.version-switch a{min-width:28px;height:26px;display:grid;place-items:center;border-radius:7px;font-size:11px;font-weight:800;color:var(--mut);text-decoration:none}
+.version-switch a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.version-switch a.on{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;box-shadow:0 2px 10px rgba(139,92,246,.4)}
+.sim-banner{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:70;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--amber);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.28);padding:6px 14px;border-radius:999px;backdrop-filter:blur(8px);pointer-events:none}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="logo">▲</div>
+    <div class="bk">Bharat Agri Bank<small>Credit Origination · AIF Desk</small></div>
+    <div class="crumb">Applications › AIF › <b>AIF/TG/2026/03417</b></div>
+    <div class="env"><span class="dot"></span>IN-VPC · AIR-GAPPED · NO DATA LEAVES</div>
+    <div class="tbtn" onclick="openGov()">🛡 Governance &amp; audit</div>
+    <div class="tbtn" onclick="openEv('index')">🔍 Evidence room</div>
+    <div class="bell" onclick="openGov()">🔔<span class="cnt" id="bellCnt">3</span></div>
+    <div class="rm"><div class="av">RK</div><div><div class="nm">R. Kumar</div><div class="rl">Credit Officer · Maker</div></div></div>
+  </div>
+  <div class="row">
+    <div class="sidebar">
+      <div class="brand">Finclus <span>AIF</span><span class="b100">27 agents</span>
+        <span class="sub">Live underwriting demo · in-VPC</span></div>
+      <div id="nav"></div>
+      <div class="sidebar-footer">
+        <b>⚡ Air-gapped · in your VPC</b><br>🏛️ RBI FREE-AI · DPDP<br>🔐 UDIN + SHAP + audit trail<br>👤 Human owns every decision
+      </div>
+    </div>
+    <div class="main">
+      <div class="casebar" id="casebar"></div>
+      <div class="maincontent" id="main"></div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer"></div>
+<div class="toastwrap" id="toastwrap"></div>
+<script>
+/* ============================================================
+   CASE — Telangana Rice Mill (custom milling, PDS levy)
+   ============================================================ */
+const CASE={
+  borrower:"Sri Lakshmi Agro Industries Pvt Ltd",
+  project:"4 TPH Rice Mill — custom milling for FCI / PDS",
+  cost:"₹1.20 Cr", ask:"₹72.50 L", promoter:"₹10.00 L (8.3%)",
+  location:"Karimnagar, Telangana", scheme:"AIF + PMFME + PMEGP + TS state top-up",
+  pan:"AAGCS4471Q", gstin:"36AAGCS4471Q1Z8", udyam:"UDYAM-TG-04-0031744",
+  cin:"U15122TG2021PTC031744", land:"Survey 247, Karimnagar", arn:"AIF/TG/2026/03417",
+  promoterCat:"SC", members:"520 FPO farmer-members"
+};
+
+/* 27 AGENTS across 7 phases */
+const PHASES=[
+  {id:0,name:"Intake & Orchestration",short:"Intake"},
+  {id:1,name:"Pre-Underwriting BRE",short:"BRE gates"},
+  {id:2,name:"Identity & Financial Verification",short:"Identity"},
+  {id:3,name:"Collateral & Legal Diligence",short:"Collateral"},
+  {id:4,name:"Technical & Financial Appraisal",short:"Appraisal"},
+  {id:5,name:"Credit Risk Engine (CRE)",short:"CRE"},
+  {id:6,name:"Synthesis & Sanction",short:"Sanction"},
+  {id:7,name:"Post-Sanction & LMS",short:"Servicing"}
+];
+const AGENTS=[
+  {ph:0,n:"Orchestrator",f:"Plans the case, dispatches specialists, assembles state",t:"controller · LangGraph",time:"—"},
+  {ph:0,n:"Document Intake",f:"OCR + classify + tamper-check every upload",t:"LayoutLMv3 · FCU",time:"3 min"},
+  {ph:1,n:"Scheme Convergence",f:"Stacks AIF + 10 convergent schemes to the 50% cap",t:"rule engine + exclusion logic",time:"11 sec"},
+  {ph:1,n:"State Permissions",f:"Builds the project's state-specific permit matrix",t:"logic table + portal scan",time:"15 min"},
+  {ph:1,n:"Promoter Eligibility",f:"Vintage · MCA disqualification · wilful-defaulter/SARFAESI",t:"MCA RoC + caution lists",time:"2 min"},
+  {ph:1,n:"Land-Use & Zoning",f:"CRZ / Forest / land-ceiling GIS overlay",t:"GIS + notifications",time:"4 min"},
+  {ph:2,n:"KYC & Entity",f:"Aadhaar · PAN · GST · MCA · Udyam · fuzzy name match",t:"UIDAI · NSDL · GSTN APIs",time:"2 min"},
+  {ph:2,n:"Multi-Bureau",f:"CIBIL · CRIF · Experian · Equifax → unified liability",t:"4-bureau reconcile",time:"20 sec"},
+  {ph:2,n:"AA & ULI",f:"Consent-pull 12-mo statements + GST + ITR across banks",t:"Account Aggregator · ULI",time:"3 min"},
+  {ph:2,n:"UDIN Authenticity",f:"Verifies every CA / valuer / legal cert on ICAI portal",t:"udin.icai.org",time:"4 sec"},
+  {ph:3,n:"Land Title",f:"OCR 7/12·8A·mutation → 30-yr chain-of-title graph",t:"vernacular LLM + Neo4j",time:"15 min"},
+  {ph:3,n:"Legal Research",f:"EC + e-Courts/DRT/NCLT/RERA → draft LSR",t:"litigation APIs + RAG",time:"30 min"},
+  {ph:3,n:"Valuation",f:"IGR guidance + comparables + GIS → FMV/FSV",t:"IGR API + Sentinel-2",time:"20 min"},
+  {ph:3,n:"CERSAI & Charge",f:"Charge search · Form I/II · ROC CHG-1",t:"CERSAI + MCA21",time:"3 min"},
+  {ph:4,n:"DPR & Techno-Econ",f:"Rice-mill costing · recovery ratio · PDS levy · DSCR/IRR",t:"CPWD SOR + XGBoost + Monte Carlo",time:"45 min"},
+  {ph:4,n:"Financial Analysis",f:"Classify txns · GST↔ITR reconcile · undisclosed loans",t:"Perfios BSA + Isolation Forest",time:"12 min"},
+  {ph:4,n:"Subsidy Optimization",f:"Optimal stack under 50% cap · minimise promoter margin",t:"convergence solver",time:"11 sec"},
+  {ph:4,n:"Cash-flow / Ability",f:"Seasonal cash-flow · EMI capacity · surplus calendar",t:"time-series + compute.dscr",time:"8 min"},
+  {ph:4,n:"Fraud & Integrity",f:"Round-tripping · DPIP · mule — never auto-classifies",t:"graph + DPIP*",time:"6 min"},
+  {ph:5,n:"Credit Scoring / PD",f:"Unified scorecard → PD (1/3/5-yr) → risk grade",t:"GBM scorecard",time:"5 sec"},
+  {ph:5,n:"LGD & Exposure",f:"FSV · recovery timeline · EAD",t:"portfolio LGD model",time:"5 sec"},
+  {ph:5,n:"EL & RAROC",f:"EL = PD×LGD×EAD · risk-based pricing · RAROC",t:"deterministic",time:"3 sec"},
+  {ph:5,n:"Adversarial",f:"Argues for decline — attacks the recommendation",t:"red-team lens",time:"20 sec"},
+  {ph:6,n:"Underwriting Memo",f:"12-section credit memo · every number source-linked",t:"RAG + Llama + Neo4j",time:"5 min"},
+  {ph:6,n:"Sanction Letter",f:"Rate · tenor · CPs / CSs · scheme conditions",t:"template + policy engine",time:"2 min"},
+  {ph:7,n:"Disbursement Control",f:"Validates CPs before each tranche · auto-release",t:"CP engine + CERSAI check",time:"live"},
+  {ph:7,n:"Covenant & Geo-tag",f:"DSCR watch · EWS · CV progress % from geo-photos",t:"AA stream + CV",time:"live"}
+];
+/* what each agent does FOR the credit manager — plain English */
+const AGENT_HELP={
+  "Orchestrator":"You don't plan the case — it orchestrates the whole investigation",
+  "Document Intake":"You don't retype anything — it reads & tags every doc (Telugu/Hindi)",
+  "Scheme Convergence":"You don't miss a subsidy — cuts promoter cash 20% → 8.3%",
+  "State Permissions":"You don't track 14 permits by hand — it builds the matrix",
+  "Promoter Eligibility":"You don't dig through circulars — it checks vintage & caution lists",
+  "Land-Use & Zoning":"You don't check CRZ/forest/ceiling laws — it does",
+  "KYC & Entity":"You don't chase KYC — Aadhaar·PAN·GST·Udyam in 2 minutes",
+  "Multi-Bureau":"You don't miss undisclosed loans — 4 bureaus reconciled (catches ₹6L)",
+  "AA & ULI":"You don't wait 2–3 weeks for statements — pulled in 3 minutes",
+  "UDIN Authenticity":"No 'known CA' shortcuts — every certificate verified in 4 sec",
+  "Land Title":"You don't wait 14–21 days — 30-yr title chain in 30 minutes",
+  "Legal Research":"You don't draft the 15-page LSR — it drafts, you review the flags",
+  "Valuation":"You don't wait 7–14 days — FMV/FSV + asset cover in 20 minutes",
+  "CERSAI & Charge":"You don't file manually — charge search & Form I/CHG-1 auto-filled",
+  "DPR & Techno-Econ":"You don't build Excel models — DSCR/IRR with PDS-levy modelled",
+  "Financial Analysis":"You don't read statements line-by-line — 500+ txns auto-classified",
+  "Subsidy Optimization":"You don't miss a scheme — optimal stack under the 50% cap",
+  "Cash-flow / Ability":"You don't guess income — verified from AA + GST + ITR",
+  "Fraud & Integrity":"You don't miss fraud — round-tripping surfaced, never auto-classified",
+  "Credit Scoring / PD":"Not a generic score — PD from YOUR portfolio, reproducible",
+  "LGD & Exposure":"You don't guess recovery — LGD & EAD computed",
+  "EL & RAROC":"You don't calculate by hand — Expected Loss & RAROC done",
+  "Adversarial":"You don't miss the downside — it argues FOR decline, stress-tests you",
+  "Underwriting Memo":"You don't write 40 pages — 12-section memo drafted in 5 minutes",
+  "Sanction Letter":"You don't type the letter — generated with CPs & scheme conditions",
+  "Disbursement Control":"You don't chase CPs — tranches release only when all turn green",
+  "Covenant & Geo-tag":"You don't wait for default — it warns you at SMA-0, before the 90-day line"
+};
+
+/* 22-point checklist (A–F) */
+const CHECKLIST=[
+  ["A · KYC & Entity","KYC — Aadhaar/PAN/Voter (all signatories & guarantors)","ok"],
+  ["A · KYC & Entity","Entity proof — CIN · bye-laws · board resolution · signatories","ok"],
+  ["A · KYC & Entity","Udyam / MSME + GST registration","ok"],
+  ["A · KYC & Entity","PACS/Coop — 3-yr audit reports (if applicable)","na"],
+  ["B · Land & Security","Land title — 7/12 · 8A · 30-yr mutation chain","red"],
+  ["B · Land & Security","Encumbrance Certificate (13–30 yr)","amber"],
+  ["B · Land & Security","Legal Search Report — title · litigation · tenancy","amber"],
+  ["B · Land & Security","Valuation report — IBBI valuer · FMV + FSV · geo-photos","ok"],
+  ["C · Project & Technical","Detailed Project Report (DPR)","ok"],
+  ["C · Project & Technical","Statutory approvals — FSSAI · pollution · fire · factory · APMC","amber"],
+  ["C · Project & Technical","Quotations — 3 competitive quotes per capital item","ok"],
+  ["C · Project & Technical","Techno-economic feasibility — DSCR ≥1.5 · IRR · break-even","ok"],
+  ["D · Financial","Bank statements — 12 mo, all accounts (via AA)","ok"],
+  ["D · Financial","ITR (3 yr) + computation + audit reports","ok"],
+  ["D · Financial","GST returns — GSTR-1 / 3B (12–24 mo)","ok"],
+  ["D · Financial","Multi-bureau — CIBIL/CRIF/Experian/Equifax + CMR","amber"],
+  ["D · Financial","Net-worth statement — CA-certified (UDIN)","ok"],
+  ["E · Collateral","Additional collateral if primary cover < loan","na"],
+  ["F · Legal / Post-sanction","CERSAI Form I/II + charge creation","ok"],
+  ["F · Legal / Post-sanction","Mortgage deed + stamp duty + registration","amber"],
+  ["F · Legal / Post-sanction","ROC Form CHG-1 (within 30 days)","ok"],
+  ["F · Legal / Post-sanction","AIF portal eligibility + subvention + geo-photos","ok"],
+  ["F · Legal / Post-sanction","Round-tripping / related-party scan","red"]
+];
+
+/* Multi-bureau reconciliation */
+const BUREAU=[
+  ["SBI KCC",300000,300000,300000,300000],
+  ["HDFC Tractor Loan",550000,550000,0,0],
+  ["Muthoot Gold Loan",0,0,200000,0],
+  ["Bajaj Consumer Loan",0,150000,150000,150000],
+  ["Local Coop Agri Loan",0,400000,0,0]
+];
+
+/* Scheme convergence scenarios (state × category) */
+const SCHEMES={
+  base:1200000*100, // paise? keep in ₹ lakh below
+};
+
+/* State permission matrix (rice mill) */
+const PERMITS=[
+  ["FSSAI License","Required","Required","Required","Required"],
+  ["Rice-mill registration","F&CS Dept","F&CS Dept","Mandi Board","F&CS Dept"],
+  ["PDS levy obligation","75%","75%","75%","50%"],
+  ["APMC / mandi license","Required","Required","Required","Required"],
+  ["Pollution NOC","Orange","Orange","Orange","Orange"],
+  ["Factory license",">10 workers",">10 workers","Applicable",">10 workers"],
+  ["Fire NOC","Required","Required","Required","Required"],
+  ["Boiler inspector cert","If steam","If steam","If steam","If steam"],
+  ["Weights & Measures","Calibration","Calibration","Calibration","Calibration"],
+  ["Electricity — industrial","Sanction","Sanction","Sanction","Sanction"],
+  ["Warehouse registration","If storing","If storing","If storing","If storing"]
+];
+const PERMIT_STATUS=[ // Telangana specific case
+  ["FSSAI License","ok","#123456 · valid till 2027"],
+  ["APMC license","ok","#TG-KNR-2024-089"],
+  ["Pollution NOC","ok","Orange · #PCB/TG/2024/1123"],
+  ["Factory license","ok","#FL-2024-KNR-456"],
+  ["Fire NOC","ok","#FIRE/KNR/2024-078"],
+  ["Boiler inspector cert","ok","#BIC-2024-112"],
+  ["Weights & Measures","ok","valid till Mar 2025"],
+  ["Electricity industrial","ok","150 HP load sanctioned"],
+  ["GST registration","ok","36AAGCS…active"],
+  ["Udyam registration","ok","UDYAM-TG-04…active"],
+  ["Warehouse registration","amber","applied · #WR-2024-5678 · ~15 days"],
+  ["Rice-mill registration (F&CS)","red","not yet submitted · CP before disbursal"]
+];
+
+/* Full 27-agent trace */
+const TRACE=[
+  ["0","orchestrator","Case AIF/TG/2026/03417 received · plan 27-agent investigation","big"],
+  ["0","doc.intake","28 documents ingested · OCR (Telugu) · tamper-check clean","done"],
+  ["1","scheme.converge","Optimal stack: AIF + PMFME(₹10L) + PMEGP(₹12.5L) + TS(₹15L) = 31.25% · under 50% cap","done"],
+  ["1","state.permits","Rice-mill permit matrix built · 12/14 verified · 2 pending","warn"],
+  ["1","promoter.elig","No MCA disqualification · not on wilful-defaulter/SARFAESI lists","done"],
+  ["1","landuse.zoning","Not in CRZ / reserved forest · land-ceiling compliant","done"],
+  ["1","BRE.gate","All pre-underwriting gates GREEN → proceed to Phase 2","big"],
+  ["2","kyc.entity","Aadhaar·PAN·GST·Udyam verified · names reconciled across docs","done"],
+  ["2","multi.bureau","⚠ CIBIL shows ₹8.5L, CRIF ₹14L — 2 undisclosed loans flagged (₹6L)","warn"],
+  ["2","aa.uli","Consent OK · 12-mo statements from 3 banks + GST + ITR in 3 min","done"],
+  ["2","udin.verify","7 CA/valuer certs — all UDIN active · no blacklist","done"],
+  ["3","land.title","30-yr chain built · ⚠ link document missing 1998–2002","warn"],
+  ["3","legal.research","e-Courts/DRT/NCLT clean · LSR draft ready · title conditional","warn"],
+  ["3","valuation","IGR + 3 comparables + GIS · FMV ₹472/sq.ft · asset cover 1.51×","done"],
+  ["3","cersai","⚠ Existing SBI charge on survey 247 — NOC required before charge","warn"],
+  ["4","dpr.techno","Rice recovery 68% · by-products (bran/husk) · PDS levy 75% modelled","done"],
+  ["4","financial","GST↔ITR reconciled · ₹45k/mo unexplained credit flagged","warn"],
+  ["4","subsidy.opt","Promoter margin cut 20%→8.3% · saves borrower ₹14L","big"],
+  ["4","cashflow","DSCR 1.38× after PDS levy (≥1.25 threshold) · seasonal surplus mapped","done"],
+  ["4","fraud.scan","Cross-referencing group inter-entity transfers…","warn"],
+  ["4","fraud.scan","⚠ Round-tripping: A→B→A ₹41L, 3 hops, same week · conf 0.58 < 0.85","warn"],
+  ["4","fraud.guard","Policy: fraud is never auto-classified → HALT, route to investigator","stop"],
+  ["5","credit.pd","Unified scorecard → PD 2.3% (1-yr) · risk grade B","done"],
+  ["5","lgd.exposure","LGD 35% · EAD ₹73.9L (loan + interest − subsidy receivable)","done"],
+  ["5","el.raroc","EL ₹0.60L · effective rate 9.25% · RAROC 18.2% > 15% hurdle","done"],
+  ["5","adversarial","Attack: seasonal + PDS levy compresses DSCR → survives with moratorium","done"],
+  ["6","memo.synth","12-section credit memo assembled · every number source-linked","done"],
+  ["6","sanction.gen","Draft sanction: ₹72.5L · 9.25% · 7yr · 12mo moratorium · 3 CPs","done"],
+  ["7","disburse.ctrl","Tranche-1 blocked until CPs: rice-mill reg · SBI NOC · round-trip clear","warn"],
+  ["7","STOP","RECOMMENDATION → SANCTION with 3 conditions precedent · human decides","big"]
+];
+
+/* ============================================================ NAV ============================================================ */
+const SCREENS=[
+  {id:"villain",ic:"👿",lb:"The Villain",sec:"Why this matters"},
+  {id:"explainer",ic:"🤖",lb:"AI Agents, explained",sec:"Why this matters"},
+  {id:"pillars",ic:"🏛️",lb:"Ant Finance + Palantir",sec:"Why this matters"},
+  {id:"overview",ic:"📊",lb:"Overview",sec:"Case"},
+  {id:"checklist",ic:"📑",lb:"22-Point Checklist",sec:"Case"},
+  {id:"swarm",ic:"🤖",lb:"27-Agent Swarm · RUN",sec:"Case"},
+  {id:"bre",ic:"🚦",lb:"1 · BRE Gates",sec:"Pipeline"},
+  {id:"identity",ic:"🪪",lb:"2 · Identity & Bureaus",sec:"Pipeline"},
+  {id:"collateral",ic:"⚖️",lb:"3 · Collateral & Legal",sec:"Pipeline"},
+  {id:"appraisal",ic:"🏭",lb:"4 · Technical & Financial",sec:"Pipeline"},
+  {id:"cre",ic:"🎯",lb:"5 · Credit Risk Engine",sec:"Pipeline"},
+  {id:"synthesis",ic:"📝",lb:"6 · Memo & Sanction",sec:"Pipeline"},
+  {id:"servicing",ic:"🛰️",lb:"7 · Disbursal & Monitoring",sec:"Pipeline"},
+  {id:"leverage",ic:"🚀",lb:"The 100× Proof",sec:"Impact"}
+];
+let cur=0, running=false;
+function renderNav(){
+  let sec="",h="";
+  SCREENS.forEach((s,i)=>{ if(s.sec!==sec){sec=s.sec;h+=`<div class="navsec">${sec}</div>`;}
+    h+=`<div class="nav-item ${i===cur?'active':''}" onclick="goTo(${i})"><span class="ic">${s.ic}</span><span class="lb">${s.lb}</span><span class="bd">${i+1}</span></div>`;});
+  document.getElementById('nav').innerHTML=h;
+}
+function goTo(i){cur=i;renderNav();document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));const t=document.getElementById('sc-'+SCREENS[i].id);if(t)t.classList.add('active');document.getElementById('main').scrollTo(0,0);}
+
+/* ============================================================ RENDER ============================================================ */
+function render(){
+  document.getElementById('main').innerHTML=[rVillain(),rExplainer(),rPillars(),rOverview(),rChecklist(),rSwarm(),rBRE(),rIdentity(),rCollateral(),rAppraisal(),rCRE(),rSynthesis(),rServicing(),rLeverage()].join('');
+  document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));
+  document.getElementById('sc-villain').classList.add('active');
+  document.getElementById('runBtn').onclick=runSwarm;
+  renderNav();
+  calcStack();
+}
+
+function rOverview(){return `<div class="screen active" id="sc-overview">
+  <div class="eyebrow">AIF Agent Swarm · 27 agents · 7 phases</div>
+  <h1>From a 90-day compliance labyrinth to a same-day investigation</h1>
+  <div class="sub">One real AIF file — a 4 TPH rice mill in Telangana — run end to end. Every checklist, every bureau, every permit, every subsidy.</div>
+  <div class="grid2">
+    <div class="card"><div class="card-title">📋 The case <span class="chip purple">AIF eligible</span></div>
+      <div class="kv"><span class="k">Borrower</span><span class="v">${CASE.borrower}</span></div>
+      <div class="kv"><span class="k">Project</span><span class="v">${CASE.project}</span></div>
+      <div class="kv"><span class="k">Location</span><span class="v">${CASE.location}</span></div>
+      <div class="kv"><span class="k">Promoter</span><span class="v">${CASE.promoterCat} category · ${CASE.members}</span></div>
+      <div class="kv"><span class="k">Project cost</span><span class="v">${CASE.cost}</span></div>
+      <div class="kv"><span class="k">Loan sought</span><span class="v">${CASE.ask}</span></div>
+      <div class="kv"><span class="k">Scheme stack</span><span class="v">${CASE.scheme}</span></div>
+    </div>
+    <div class="card"><div class="card-title">🔧 The 7-phase pipeline</div>
+      ${PHASES.map(p=>{const n=AGENTS.filter(a=>a.ph===p.id).length;return `<div class="kv"><span class="k mono">Phase ${p.id}</span><span class="v">${p.name} · <span class="muted">${n} agents</span></span></div>`;}).join('')}
+      <div style="margin-top:10px;padding:10px;background:var(--s2);border-radius:8px;font-size:12px;color:var(--mut)">
+        <b style="color:var(--green)">27 agents</b> run in parallel inside your VPC. A human gate on every adverse call.
+      </div>
+    </div>
+  </div>
+  <div class="grid4" style="margin-top:14px">
+    <div class="card stat"><div class="n" style="color:var(--cyan)">22+</div><div class="l">checklist items auto-assembled</div></div>
+    <div class="card stat"><div class="n" style="color:var(--fab2)">10</div><div class="l">convergent schemes optimised</div></div>
+    <div class="card stat"><div class="n" style="color:var(--amber)">4</div><div class="l">bureaus reconciled</div></div>
+    <div class="card stat"><div class="n" style="color:var(--green)">90d → ~7d</div><div class="l">sanction TAT</div></div>
+  </div>
+  <div class="card hl" style="margin-top:14px"><b>The old cost:</b> ₹1.05–2.75L per file — 4–11% of a ₹25L loan before you take any credit risk. <b style="color:var(--green)">That's not lending; it's a compliance charity.</b> The swarm takes it to ~₹15–25K.</div>
+</div>`;}
+
+function rChecklist(){
+  let ok=0,am=0,rd=0,na=0;CHECKLIST.forEach(c=>{c[2]==='ok'?ok++:c[2]==='amber'?am++:c[2]==='red'?rd++:na++;});
+  return `<div class="screen" id="sc-checklist">
+  <div class="eyebrow">The real AIF checklist · A–F</div>
+  <h1>${CHECKLIST.length} mandatory checks — auto-assembled from the data map</h1>
+  <div class="sub">The unabridged NABARD/lead-bank checklist. Green = verified from a rail · Amber = human review · Red = condition precedent.</div>
+  <div class="seg">
+    <span class="pill"><b style="color:var(--green)">${ok}</b> verified</span>
+    <span class="pill"><b style="color:var(--amber)">${am}</b> review</span>
+    <span class="pill"><b style="color:var(--red)">${rd}</b> condition precedent</span>
+    <span class="pill"><b style="color:var(--mut2)">${na}</b> n/a</span>
+  </div>
+  <div class="grid2">${CHECKLIST.map((c,i)=>{const cl=c[2]==='ok'?'green':c[2]==='amber'?'amber':c[2]==='red'?'red':'blue';const mk=c[2]==='ok'?'✓':c[2]==='amber'?'!':c[2]==='red'?'✕':'–';
+    return `<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:12px">
+      <span class="chip ${cl}">${mk}</span><span style="flex:1">${c[1]}<div class="mono" style="font-size:9.5px;color:var(--mut2);margin-top:2px">${c[0]}</div></span></div>`;}).join('')}</div>
+</div>`;}
+
+function rSwarm(){
+  let h=`<div class="screen" id="sc-swarm">
+  <div class="eyebrow">The 27-agent swarm</div>
+  <h1>Twenty-seven specialists. Seven phases. Parallel.</h1>
+  <div class="sub">Each agent = bounded objective + typed tools + guardrails + a human gate. The <b style="color:var(--green)">green line</b> on each card is what it does <b>for you</b>, in plain English. Press run to stream the whole investigation.</div>
+  <button class="btn primary" id="runBtn">▶ Run all 27 agents</button>
+  <div class="trace" id="trace"><div class="l" style="opacity:1"><span class="ph"></span><span class="tg muted2">idle</span><span class="tm muted">Press “Run all 27 agents” — watch the phases execute and the fraud agent halt.</span></div></div>`;
+  PHASES.forEach(p=>{ const list=AGENTS.map((a,idx)=>({a,idx})).filter(x=>x.a.ph===p.id);
+    h+=`<div class="phase-hdr"><span class="pn">PHASE ${p.id}</span><span class="pt">${p.name}</span><span class="pl">${list.length} agents</span></div><div class="agrid">`;
+    list.forEach(({a,idx})=>{ h+=`<div class="acard" id="ag-${idx}"><span class="num">${String(idx+1).padStart(2,'0')}</span>
+      <div class="an">${a.n}</div><div class="af">${a.f}</div><div class="at">${a.t}</div>
+      <div class="st"><span class="chip purple">${a.time}</span></div>
+      <div class="ahelp">✓ ${AGENT_HELP[a.n]||''}</div></div>`;});
+    h+=`</div>`;});
+  h+=`</div>`;return h;
+}
+
+function rBRE(){return `<div class="screen" id="sc-bre">
+  <div class="eyebrow">Phase 1 · Pre-Underwriting BRE</div>
+  <h1>The gates that kill a project before a single ratio is calculated</h1>
+  <div class="sub">Scheme convergence, state permissions, promoter eligibility — the knowledge that walks out when your senior officer retires.</div>
+  <div class="g21">
+    <div class="card"><div class="card-title">🧮 Scheme Convergence Optimizer <span class="chip cyan">interactive</span></div>
+      <div style="font-size:11.5px;color:var(--mut);margin-bottom:8px">Project cost fixed at ₹1.20 Cr. Change the promoter category and watch the optimal stack recompute under the 50% subsidy cap.</div>
+      <div class="seg" id="catBtns">
+        <button class="btn sm on" data-cat="SC" onclick="setCat('SC')">SC / ST promoter</button>
+        <button class="btn sm" data-cat="GEN" onclick="setCat('GEN')">General</button>
+        <button class="btn sm" data-cat="FPO" onclick="setCat('FPO')">FPO (women-led)</button>
+      </div>
+      <table class="tb"><thead><tr><th>Component</th><th style="text-align:right">Amount</th><th style="text-align:right">% cost</th></tr></thead><tbody id="stackBody"></tbody></table>
+      <div class="card hl" style="margin-top:10px;font-size:12px" id="stackNote"></div>
+    </div>
+    <div class="card"><div class="card-title">👤 Promoter Eligibility</div>
+      <div class="kv"><span class="k">Agri-business vintage</span><span class="v chip green">6 yrs (ITR/GST)</span></div>
+      <div class="kv"><span class="k">MCA director status</span><span class="v chip green">Active · no strike-off</span></div>
+      <div class="kv"><span class="k">Wilful defaulter list</span><span class="v chip green">No hit</span></div>
+      <div class="kv"><span class="k">SARFAESI / fraud list</span><span class="v chip green">Clear</span></div>
+      <div class="kv"><span class="k">Land-use / CRZ / forest</span><span class="v chip green">Compliant</span></div>
+      <div class="kv"><span class="k">Land ceiling Act</span><span class="v chip green">Within limit</span></div>
+      <div style="margin-top:8px" class="chip green">BRE GATE → GREEN</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="card-title">🏛️ State Permissions Matrix — Rice Mill <span class="chip amber">Telangana case: 10 verified · 2 pending</span></div>
+    <div class="g12">
+      <table class="tb"><thead><tr><th>Permit</th><th>TS</th><th>AP</th><th>PB</th><th>WB</th></tr></thead><tbody>
+        ${PERMITS.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')}
+      </tbody></table>
+      <div><table class="tb"><thead><tr><th>This file (TS)</th><th>Status</th></tr></thead><tbody>
+        ${PERMIT_STATUS.map(r=>`<tr><td>${r[0]}<div class="mono" style="font-size:9px;color:var(--mut2)">${r[2]}</div></td><td><span class="chip ${r[1]}">${r[1]==='ok'?'✓':r[1]==='amber'?'⏳':'✕'}</span></td></tr>`).join('')}
+      </tbody></table></div>
+    </div>
+    <div class="card wf" style="margin-top:10px;font-size:12px"><b style="color:var(--amber)">⚠ PDS levy (Telangana-specific):</b> 75% of production sold at levy rate (~10–15% below market). The DPR agent factored this in — DSCR drops 1.65 → <b>1.38</b>, still above the 1.25 threshold. Miss this rule and you over-lend.</div>
+  </div>
+</div>`;}
+
+function rIdentity(){return `<div class="screen" id="sc-identity">
+  <div class="eyebrow">Phase 2 · Identity & Financial Verification</div>
+  <h1>Four bureaus, Account Aggregator, ULI, and UDIN — no “known CA” shortcuts</h1>
+  <div class="sub">Most officers pull one bureau and hope. The swarm reconciles four and verifies every certificate.</div>
+  <div class="g21">
+    <div class="card"><div class="card-title">📇 Multi-Bureau Reconciliation <span class="chip cyan">click to reveal</span></div>
+      <table class="tb"><thead><tr><th>Lender</th><th style="text-align:right">CIBIL</th><th style="text-align:right">CRIF</th><th style="text-align:right">Experian</th><th style="text-align:right">Equifax</th></tr></thead><tbody>
+        ${BUREAU.map(r=>`<tr><td><b>${r[0]}</b></td>${r.slice(1).map(v=>`<td style="text-align:right" class="mono">${v?('₹'+(v/100000).toFixed(1)+'L'):'<span class="muted2">—</span>'}</td>`).join('')}</tr>`).join('')}
+      </tbody></table>
+      <button class="btn sm primary" style="margin-top:10px" onclick="revealBureau()">▶ Reconcile & flag undisclosed</button>
+      <div id="bureauOut" style="display:none;margin-top:10px"></div>
+    </div>
+    <div class="card"><div class="card-title">🔐 UDIN Authenticity</div>
+      <div style="font-size:11.5px;color:var(--mut);margin-bottom:8px">Every CA / valuer / legal certificate checked on the ICAI portal — genuineness, type, validity, no blacklist.</div>
+      <div class="kv"><span class="k mono">Net-worth cert</span><span class="v chip green">✓ UDIN active</span></div>
+      <div class="kv"><span class="k mono">3-yr financials</span><span class="v chip green">✓ verified</span></div>
+      <div class="kv"><span class="k mono">Projection cert</span><span class="v chip green">✓ verified</span></div>
+      <div class="kv"><span class="k mono">Valuation (IBBI)</span><span class="v chip green">✓ verified</span></div>
+      <div class="kv"><span class="k mono">CA membership</span><span class="v chip green">Active · no action</span></div>
+      <div style="margin-top:8px;font-size:11px;color:var(--mut2)">“The CA is known to us, sir” — replaced by a 4-second portal check, every doc, no exceptions.</div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="card"><div class="card-title">🔗 Account Aggregator + ULI — the consent journey</div>
+      <div class="bar"><span class="lbl">SMS consent link sent</span><div class="tr"><i style="width:100%;background:var(--green)"></i></div><span class="val">✓</span></div>
+      <div class="bar"><span class="lbl">Aadhaar OTP approval</span><div class="tr"><i style="width:100%;background:var(--green)"></i></div><span class="val">✓</span></div>
+      <div class="bar"><span class="lbl">12-mo statements · 3 banks</span><div class="tr"><i style="width:100%;background:var(--cyan)"></i></div><span class="val">pulled</span></div>
+      <div class="bar"><span class="lbl">GST returns via GSTN</span><div class="tr"><i style="width:100%;background:var(--cyan)"></i></div><span class="val">pulled</span></div>
+      <div class="bar"><span class="lbl">ITR via IT Dept</span><div class="tr"><i style="width:100%;background:var(--cyan)"></i></div><span class="val">pulled</span></div>
+      <div style="margin-top:8px;font-size:12px;color:var(--green)"><b>Under 10 minutes</b>, zero human touch — vs 2–3 weeks and 5 follow-up calls.</div>
+    </div>
+    <div class="card"><div class="card-title">🪪 KYC & Entity</div>
+      <div class="kv"><span class="k">Aadhaar e-KYC</span><span class="v chip green">✓ OTP</span></div>
+      <div class="kv"><span class="k">PAN (NSDL)</span><span class="v chip green">✓ ${CASE.pan}</span></div>
+      <div class="kv"><span class="k">GST (GSTN)</span><span class="v chip green">✓ active</span></div>
+      <div class="kv"><span class="k">MCA RoC</span><span class="v chip green">✓ filings current</span></div>
+      <div class="kv"><span class="k">Udyam</span><span class="v chip green">✓ ${CASE.udyam}</span></div>
+      <div class="kv"><span class="k">Cross-doc name match</span><span class="v chip green">✓ fuzzy-matched</span></div>
+    </div>
+  </div>
+</div>`;}
+
+function rCollateral(){return `<div class="screen" id="sc-collateral">
+  <div class="eyebrow">Phase 3 · Collateral & Legal Diligence</div>
+  <h1>A 30-year title chain in 30 minutes — the panel advocate reviews, doesn't retype</h1>
+  <div class="sub">Land title · legal search · valuation · CERSAI. The two long poles of the old process, parallelised.</div>
+  <div class="grid2">
+    <div class="card"><div class="card-title">📜 Land title chain <span class="chip purple">Neo4j</span></div>
+      <div class="kv"><span>1988</span><span>Mutation A → B ✓</span></div>
+      <div class="kv"><span>1995</span><span>Mutation B → C ✓</span></div>
+      <div class="kv" style="color:var(--amber)"><span>1998–2002</span><span>⚠ GAP — link document missing</span></div>
+      <div class="kv"><span>2002</span><span>Mutation C → D ✓</span></div>
+      <div class="kv"><span>2015</span><span>Mutation D → E ✓</span></div>
+      <div class="kv"><span>2025</span><span>Current: Sri Lakshmi Agro ✓</span></div>
+      <div style="margin-top:8px"><span class="chip amber">Panel advocate: indemnity bond required for 1998–2002 gap</span> <span class="ev" onclick="openEv('land7_12')" style="font-size:11px">view 7/12 record</span></div>
+    </div>
+    <div class="card"><div class="card-title">🔍 Legal search</div>
+      <div class="kv"><span>Encumbrance (30-yr)</span><span>1 satisfied mortgage (SBI 2015)</span></div>
+      <div class="kv"><span>e-Courts</span><span class="chip green">no litigation</span></div>
+      <div class="kv"><span>DRT / NCLT</span><span class="chip green">no proceedings</span></div>
+      <div class="kv"><span>RERA / revenue court</span><span class="chip green">clean</span></div>
+      <div class="kv"><span>Land ceiling / tenancy</span><span class="chip green">within limit</span></div>
+      <div class="kv"><span>LSR draft</span><span class="chip cyan">ready · 30 min</span></div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="card"><div class="card-title">💰 Valuation <span class="chip purple">IGR + Sentinel-2</span></div>
+      <div class="kv"><span>Guidance value (IGR)</span><span>₹450/sq.ft</span></div>
+      <div class="kv"><span>Avg comparable (3 deeds)</span><span>₹487/sq.ft</span></div>
+      <div class="kv"><span>GIS adj (road/mandi access)</span><span>+12%</span></div>
+      <div class="kv"><span><b>Fair market value</b></span><span class="mono ev" style="color:var(--cyan)" onclick="openEv('valuation')"><b>₹472/sq.ft</b></span></div>
+      <div class="kv"><span>Forced sale value (80%)</span><span>₹378/sq.ft</span></div>
+      <div class="kv"><span><b>Asset cover</b></span><span style="color:var(--green)"><b>1.51× ✓</b></span></div>
+    </div>
+    <div class="card"><div class="card-title">🔏 CERSAI & charge</div>
+      <div class="kv"><span>CERSAI pre-search</span><span class="chip amber">⚠ SBI charge on survey 247</span></div>
+      <div class="kv"><span>Action</span><span>NOC + satisfaction required</span></div>
+      <div class="kv"><span>Form I (charge creation)</span><span class="chip cyan">auto-populated</span></div>
+      <div class="kv"><span>ROC Form CHG-1</span><span class="chip cyan">ready (30-day clock)</span></div>
+      <div class="card wf" style="margin-top:8px;font-size:11.5px"><b style="color:var(--red)">Condition precedent:</b> obtain SBI NOC & file satisfaction before new charge.</div>
+    </div>
+  </div>
+</div>`;}
+
+function rAppraisal(){return `<div class="screen" id="sc-appraisal">
+  <div class="eyebrow">Phase 4 · Technical & Financial Appraisal</div>
+  <h1>Rice-mill economics the swarm actually understands</h1>
+  <div class="sub">Recovery ratio, by-products, PDS levy, undisclosed loans, optimal subsidy — modelled, not guessed.</div>
+  <div class="grid2">
+    <div class="card"><div class="card-title">🏭 DPR & techno-economic (rice mill)</div>
+      <div class="kv"><span>Capacity</span><span>4 TPH · custom milling</span></div>
+      <div class="kv"><span>Rice recovery ratio</span><span>68%</span></div>
+      <div class="kv"><span>By-products (bran/husk)</span><span>monetised in model</span></div>
+      <div class="kv"><span>PDS levy obligation</span><span class="chip amber">75% @ ~12% below market</span></div>
+      <div class="kv"><span>DSCR (pre-levy)</span><span>1.65×</span></div>
+      <div class="kv"><span><b>DSCR (post-levy)</b></span><span style="color:var(--green)"><b>1.38× ✓</b></span></div>
+      <div class="kv"><span>IRR · break-even</span><span>17.4% · Yr-4</span></div>
+    </div>
+    <div class="card"><div class="card-title">📊 Financial analysis <span class="chip purple">Perfios + Isolation Forest</span></div>
+      <div class="kv"><span>Bank turnover ↔ GST</span><span class="chip green">reconciled</span></div>
+      <div class="kv"><span>GST ↔ ITR variance</span><span class="chip green">3.6% · in tol</span></div>
+      <div class="kv" style="color:var(--amber)"><span>⚠ Unexplained credit</span><span>₹45k/mo · unknown source</span></div>
+      <div class="kv" style="color:var(--amber)"><span>⚠ Undisclosed loans</span><span class="ev" onclick="openEv('cibil')">Muthoot ₹2L · Coop ₹4L</span></div>
+      <div class="kv"><span>Recompute w/ EMIs</span><span>DSCR still ≥ 1.25 ✓</span></div>
+      <div class="kv"><span>Cheque returns 12m</span><span class="chip green">0.4%</span></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="card-title">🌾 Subsidy optimization — the money screen <span class="chip cyan">50% cap enforced</span></div>
+    <div class="bar"><span class="lbl">AIF — 3% interest subvention</span><div class="tr"><i style="width:100%;background:var(--fab)"></i></div><span class="val">≤₹2 Cr</span></div>
+    <div class="bar"><span class="lbl">PMFME capital subsidy</span><div class="tr"><i style="width:28%;background:var(--cyan)"></i></div><span class="val">₹10.0 L</span></div>
+    <div class="bar"><span class="lbl">PMEGP margin money (SC)</span><div class="tr"><i style="width:35%;background:var(--green)"></i></div><span class="val">₹12.5 L</span></div>
+    <div class="bar"><span class="lbl">Telangana state top-up</span><div class="tr"><i style="width:42%;background:var(--amber)"></i></div><span class="val">₹15.0 L</span></div>
+    <div class="card hl" style="margin-top:10px;font-size:12px"><b>Optimal stack: ₹37.5 L (31.25%)</b> — under the 50% cap. Promoter margin cut from 20% (₹24 L) to <b style="color:var(--green)">8.3% (₹10 L)</b>. Saves the FPO <b style="color:var(--green)">₹14 L</b> in upfront cash. The agent computed it in 11 seconds and knows MIDH/PMFME don't stack on the same cost line.</div>
+  </div>
+</div>`;}
+
+function rCRE(){return `<div class="screen" id="sc-cre">
+  <div class="eyebrow">Phase 5 · Credit Risk Engine</div>
+  <h1>PD · LGD · EL · RAROC — priced off your own portfolio, not a generic scorecard</h1>
+  <div class="sub">The deterministic layer. The LLM investigated; these models decide.</div>
+  <div class="grid4">
+    <div class="card"><div class="card-title" style="justify-content:center">Probability of Default</div><div class="gauge" style="--v:23;--gc:var(--amber)"><div class="in" style="font-size:15px">2.3%</div></div><div style="text-align:center;font-size:11px;color:var(--mut)">1-yr · grade B</div></div>
+    <div class="card"><div class="card-title" style="justify-content:center">Loss Given Default</div><div class="gauge" style="--v:35;--gc:var(--fab)"><div class="in" style="font-size:15px">35%</div></div><div style="text-align:center;font-size:11px;color:var(--mut)">agri land · FSV-based</div></div>
+    <div class="card"><div class="card-title" style="justify-content:center">Exposure at Default</div><div class="gauge" style="--v:100;--gc:var(--cyan)"><div class="in" style="font-size:13px">₹73.9L</div></div><div style="text-align:center;font-size:11px;color:var(--mut)">loan + int − subsidy</div></div>
+    <div class="card"><div class="card-title" style="justify-content:center">RAROC</div><div class="gauge" style="--v:73;--gc:var(--green)"><div class="in" style="font-size:15px">18.2%</div></div><div style="text-align:center;font-size:11px;color:var(--mut)">> 15% hurdle ✓</div></div>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="card"><div class="card-title">💵 Risk-based pricing waterfall</div>
+      <div class="kv"><span>Base rate</span><span class="mono">9.50%</span></div>
+      <div class="kv"><span>+ Risk premium (PD bucket B)</span><span class="mono" style="color:var(--amber)">+2.25%</span></div>
+      <div class="kv"><span>+ Term premium (7-yr)</span><span class="mono" style="color:var(--amber)">+0.50%</span></div>
+      <div class="kv"><span>− AIF interest subvention</span><span class="mono" style="color:var(--green)">−3.00%</span></div>
+      <div class="kv"><span><b>Effective rate to borrower</b></span><span class="mono" style="color:var(--green)"><b>9.25%</b></span></div>
+      <div class="kv"><span>Expected loss (PD×LGD×EAD)</span><span class="mono">₹0.60 L</span></div>
+    </div>
+    <div class="card"><div class="card-title">⚔️ Adversarial agent — argues for decline</div>
+      <div style="font-size:12px;color:#c9d4e6">
+        <p style="margin-bottom:7px"><b style="color:var(--red)">Attack:</b> “Seasonal paddy + 75% PDS levy compresses margin — DSCR won't hold.”</p>
+        <p style="margin-bottom:7px"><b style="color:var(--green)">Survives →</b> structured with 12-mo moratorium + by-product income; DSCR 1.38× at levy price.</p>
+        <p style="margin-bottom:7px"><b style="color:var(--red)">Attack:</b> “Round-tripping = fraud, decline.”</p>
+        <p><b style="color:var(--amber)">Unresolved →</b> not auto-classified; routed to investigator as a CP. <b style="color:var(--tx)">The machine refused to decide.</b></p>
+      </div>
+    </div>
+  </div>
+</div>`;}
+
+function rSynthesis(){const secs=["Borrower & promoter profile","Project overview & technical feasibility","Scheme convergence & subsidy optimization","State permissions & regulatory compliance","Multi-bureau liability report","Bank statement & cash-flow analysis","Legal due diligence & title opinion","Valuation & security cover","Project financials & viability ratios","Credit risk (PD · LGD · EL · RAROC)","Risk factors · mitigants · covenants","Recommendation (sanction / reject / escalate)"];
+  return `<div class="screen" id="sc-synthesis">
+  <div class="eyebrow">Phase 6 · Synthesis & Sanction</div>
+  <h1>A 12-section credit memo — every number source-linked</h1>
+  <div class="sub">Assembled from all 27 agents in 5 minutes. The committee reviews a finished memo, not raw documents.</div>
+  <div class="g12">
+    <div class="card"><div class="card-title">📝 Underwriting memo <span class="chip green">auto-generated</span></div>
+      ${secs.map((t,i)=>`<div class="memo-sec"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="t">${t}</span><span class="chip ${i===11?'purple':'green'}">${i===11?'★':'✓'}</span></div>`).join('')}
+    </div>
+    <div class="card"><div class="card-title">📜 Sanction letter <span class="chip purple">draft</span></div>
+      <div class="kv"><span>Decision</span><span class="chip green">SANCTION w/ conditions</span></div>
+      <div class="kv"><span>Amount</span><span>₹72.50 L</span></div>
+      <div class="kv"><span>Rate</span><span>9.25% (post-AIF)</span></div>
+      <div class="kv"><span>Tenor · moratorium</span><span>7 yrs · 12 mo</span></div>
+      <div class="kv"><span>RAROC</span><span style="color:var(--green)">18.2%</span></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--mut2)">CONDITIONS PRECEDENT</div>
+      <div class="kv"><span class="chip red">CP-1</span><span>Rice-mill registration (TS F&CS)</span></div>
+      <div class="kv"><span class="chip red">CP-2</span><span>SBI NOC + charge satisfaction</span></div>
+      <div class="kv"><span class="chip red">CP-3</span><span>Round-tripping investigator clearance</span></div>
+      <div style="margin-top:10px;padding:9px;background:var(--s2);border-radius:8px;font-size:11px;color:var(--mut)">Scheme condition: MIDH/state subsidy released against completion certificate + geo-photos; promoter brings ₹10 L margin upfront.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="card-title">🖋️ Maker–Checker · Delegation of Powers <span class="chip cyan">four-eyes · RBI-aligned</span></div>
+    <div class="mc">
+      <div class="mstep done"><div class="role">Recommender</div><div class="who">AI Swarm</div><div class="stt"><span class="chip green">✓ memo assembled</span></div></div>
+      <div class="marrow">→</div>
+      <div class="mstep cur"><div class="role">Maker</div><div class="who">R. Kumar</div><div class="stt" style="color:var(--fab2)">reviewing · you</div></div>
+      <div class="marrow">→</div>
+      <div class="mstep"><div class="role">Checker</div><div class="who">S. Menon</div><div class="stt muted">Sr. Manager · pending</div></div>
+      <div class="marrow">→</div>
+      <div class="mstep"><div class="role">Sanction (DoP)</div><div class="who">Branch Credit Cmte</div><div class="stt muted">₹72.5L within DoP</div></div>
+    </div>
+    <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap;align-items:center">
+      <button class="btn primary" onclick="toast('✓ <b>Recommended for sanction</b> forwarded to Checker (S. Menon). Maker action logged to the audit trail with your ID and timestamp.')">✓ Recommend for sanction</button>
+      <button class="btn" onclick="openEv('sanction')">🔍 Open sanction memo · sources</button>
+      <button class="btn" onclick="toast('↩ <b>Returned to appraisal</b> with a query. The relevant agent re-runs and the memo re-assembles — the loop is logged.')">↩ Return with query</button>
+      <span style="font-size:11px;color:var(--mut);margin-left:auto">AI recommends · <b style="color:var(--tx)">a named human decides</b> · every action hash-logged</span>
+    </div>
+  </div>
+  <div class="card hl" style="margin-top:14px"><b>Human owns the decision.</b> The swarm recommends; a named authority under Delegation of Powers signs. Every figure in the memo is one click from its <span class="ev" onclick="openEv('index')">source document</span> — this is not a black box.</div>
+</div>`;}
+
+function rServicing(){return `<div class="screen" id="sc-servicing">
+  <div class="eyebrow">Phase 7 · Post-Sanction & LMS</div>
+  <h1>Disbursement control, covenant monitoring, geo-tagged progress</h1>
+  <div class="sub">The swarm doesn't stop at sanction — it guards every tranche and watches for trouble before the 90-day line.</div>
+  <div class="grid2">
+    <div class="card"><div class="card-title">💸 Disbursement control <span class="chip amber">tranche-1 held</span></div>
+      <div class="kv"><span>Promoter margin brought in</span><span class="chip amber">⏳ pending</span></div>
+      <div class="kv"><span>Mortgage deed registered</span><span class="chip amber">⏳ pending</span></div>
+      <div class="kv"><span>CERSAI charge registered</span><span class="chip red">✕ SBI NOC first</span></div>
+      <div class="kv"><span>ROC CHG-1 filed</span><span class="chip green">✓</span></div>
+      <div class="kv"><span>Asset insurance (bank clause)</span><span class="chip green">✓</span></div>
+      <div class="kv"><span>Geo-photo (pre-construction)</span><span class="chip green">✓ tagged</span></div>
+      <div style="margin-top:8px;font-size:11px;color:var(--mut)">Auto-releases the moment all CPs turn green — no manual chase.</div>
+    </div>
+    <div class="card"><div class="card-title">📈 Covenant monitoring + geo-tag</div>
+      <button class="btn sm primary" onclick="revealEWS()">▶ Reveal early-warning signals</button>
+      <div id="ewsOut" style="display:none;margin-top:10px">
+        <div class="card wf" style="font-size:11.5px">
+          <div class="kv" style="color:var(--amber)"><span>DSCR (Q2 FY26)</span><span>1.15 &lt; 1.25 covenant</span></div>
+          <div class="kv" style="color:var(--amber)"><span>GSTR-3B</span><span>filing delayed · turnover ↓14%</span></div>
+          <div class="kv" style="color:var(--amber)"><span>AA inflows</span><span>↓19% vs projection</span></div>
+          <div class="kv" style="color:var(--amber)"><span>MCA</span><span>new charge registered</span></div>
+          <div class="kv"><span>Geo-photo (Month 3, CV)</span><span>construction 45%</span></div>
+          <div style="margin-top:8px;color:var(--amber);font-weight:700">→ SMA-0 · RM intervention · show-cause logged</div>
+          <div class="muted" style="font-size:10.5px;margin-top:4px">Not an NPA. Intelligence before the 90-day line.</div>
+        </div>
+      </div>
+      <div id="ewsIdle" style="margin-top:10px;font-size:12px;color:var(--mut)">Traditional LMS shows <b style="color:var(--green)">CURRENT · 0 DPD</b>. The fabric sees what's coming.</div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="card"><div class="card-title">🏦 LMS — repayment schedule <span class="chip cyan">amortization · ₹72.5L · 9.25% · 7yr</span></div>
+      <table class="emi"><thead><tr><th>Period</th><th>Opening</th><th>Interest</th><th>Principal</th><th>EMI</th><th>Closing</th></tr></thead><tbody>
+        <tr class="mora"><td>M1–12 · moratorium</td><td>72.50</td><td>0.56/mo</td><td>0.00</td><td>0.56</td><td>72.50</td></tr>
+        <tr><td>M13</td><td>72.50</td><td>0.56</td><td>0.76</td><td>1.32</td><td>71.74</td></tr>
+        <tr><td>M24</td><td>63.9</td><td>0.49</td><td>0.83</td><td>1.32</td><td>63.1</td></tr>
+        <tr><td>M48</td><td>41.2</td><td>0.32</td><td>1.00</td><td>1.32</td><td>40.2</td></tr>
+        <tr><td>M72</td><td>15.0</td><td>0.12</td><td>1.20</td><td>1.32</td><td>13.8</td></tr>
+        <tr><td>M84 · final</td><td>1.31</td><td>0.01</td><td>1.31</td><td>1.32</td><td>0.00</td></tr>
+      </tbody></table>
+      <div style="margin-top:8px;font-size:10.5px;color:var(--mut)">₹ in lakh · illustrative. Interest serviced through the 12-month moratorium; EMI ₹1.32L begins M13. AIF 3% subvention credited quarterly to the borrower's account per scheme rules.</div>
+    </div>
+    <div class="card"><div class="card-title">💸 Disbursement tranches <span class="chip amber">milestone-linked · CP-gated</span></div>
+      <div class="trrow"><span class="tl">T1 · 30% · ₹21.75L</span><div class="tbar"><i style="left:0;width:30%;background:var(--amber);color:#04140d">held · CPs pending</i></div></div>
+      <div class="trrow"><span class="tl">T2 · 40% · ₹29.00L</span><div class="tbar"><i style="left:30%;width:40%;background:var(--s3);color:var(--mut);border:1px dashed var(--line2)">at 50% construction (geo-verified)</i></div></div>
+      <div class="trrow"><span class="tl">T3 · 30% · ₹21.75L</span><div class="tbar"><i style="left:70%;width:30%;background:var(--s3);color:var(--mut);border:1px dashed var(--line2)">on commissioning + subsidy claim</i></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--mut2);font-family:var(--mono);margin-top:2px"><span>0% built</span><span>50%</span><span>100% · commissioned</span></div>
+      <div class="card wf" style="margin-top:10px;font-size:11px"><b style="color:var(--red)">Tranche-1 auto-held</b> until the 3 conditions precedent clear — the disbursement agent verifies CERSAI charge, margin credit and mortgage registration on-portal before releasing. <span class="ev" onclick="openEv('sanction')">view sanction terms</span></div>
+    </div>
+  </div>
+</div>`;}
+
+function rLeverage(){return `<div class="screen" id="sc-leverage">
+  <div class="eyebrow">The 100× proof</div>
+  <h1>One officer → a whole department</h1>
+  <div class="sub">Before vs after, on this AIF file — with panel advocate & valuer still reviewing exceptions.</div>
+  <div class="grid2">
+    <div class="card" style="border-color:rgba(251,191,36,.3)"><div class="card-title" style="color:var(--amber)">📉 Today</div>
+      <div class="kv"><span>Sanction TAT</span><span style="color:var(--amber)">60–90 days</span></div>
+      <div class="kv"><span>Origination cost</span><span style="color:var(--amber)">₹1.05–2.75 L</span></div>
+      <div class="kv"><span>Cost as % of ₹25L loan</span><span style="color:var(--amber)">4–11%</span></div>
+      <div class="kv"><span>Officer capacity</span><span style="color:var(--amber)">8–12 loans / yr</span></div>
+      <div class="progress" style="margin-top:8px"><i style="width:8%;background:var(--amber)"></i></div>
+    </div>
+    <div class="card" style="border-color:rgba(52,211,153,.4)"><div class="card-title" style="color:var(--green)">🚀 With the 27-agent swarm</div>
+      <div class="kv"><span>Sanction TAT</span><span style="color:var(--green)">~7 days</span></div>
+      <div class="kv"><span>Origination cost</span><span style="color:var(--green)">₹15–25 K</span></div>
+      <div class="kv"><span>Cost as % of loan</span><span style="color:var(--green)">&lt;1%</span></div>
+      <div class="kv"><span>Officer capacity</span><span style="color:var(--green)">40–60 loans / yr</span></div>
+      <div class="progress" style="margin-top:8px"><i style="width:100%;background:linear-gradient(90deg,var(--cyan),var(--green))"></i></div>
+    </div>
+  </div>
+  <div class="grid4" style="margin-top:14px">
+    <div class="card stat"><div class="n" style="color:var(--cyan)">~92%</div><div class="l">TAT reduction</div></div>
+    <div class="card stat"><div class="n" style="color:var(--green)">~90%</div><div class="l">cost reduction</div></div>
+    <div class="card stat"><div class="n" style="color:var(--fab2)">5×</div><div class="l">officer capacity</div></div>
+    <div class="card stat"><div class="n" style="color:var(--amber)">pre-sanction</div><div class="l">NPA detection</div></div>
+  </div>
+  <div class="card hl" style="margin-top:14px"><b>The moat:</b> this swarm isn't a generic product — it runs YOUR scheme rules, YOUR state matrix, YOUR legal thresholds, YOUR risk appetite, codified into software. The bank that builds its own judgment engine owns the fastest AIF pipeline in India. Everyone else rents it. <span style="color:var(--mut)">Per-agent speed-ups illustrative; aggregate is a labelled design hypothesis; a human owns every decision.</span></div>
+</div>`;}
+
+/* ============================================================ INTERACTIONS ============================================================ */
+function setCat(c){document.querySelectorAll('#catBtns .btn').forEach(b=>b.classList.toggle('on',b.dataset.cat===c));calcStack(c);}
+function calcStack(cat){
+  cat=cat||'SC';
+  const cost=12000000; // ₹1.20 Cr in rupees
+  // components in ₹ (capped)
+  const pmfme=1000000; // ₹10L cap
+  const pmegp = cat==='SC'?1250000: cat==='FPO'?1250000: 750000; // SC/FPO higher margin money
+  const state=1500000; // TS top-up ₹15L
+  let subsidy=pmfme+pmegp+state;
+  const cap=cost*0.5;
+  let capped=false;
+  if(subsidy>cap){subsidy=cap;capped=true;}
+  // promoter margin: general 20%, SC/FPO can go to ~8.3%
+  const marginPct = cat==='GEN'?0.20:0.0833;
+  const margin=Math.round(cost*marginPct);
+  const loan=cost-subsidy-margin;
+  const rows=[
+    ["Project cost",cost,1],
+    ["PMFME capital subsidy",pmfme,pmfme/cost],
+    ["PMEGP margin money",pmegp,pmegp/cost],
+    ["State top-up (TS)",state,state/cost],
+    ["AIF term loan",loan,loan/cost],
+    ["Promoter margin",margin,margin/cost]
+  ];
+  const body=document.getElementById('stackBody');
+  if(!body)return;
+  body.innerHTML=rows.map((r,i)=>{const hi=r[0]==='Promoter margin';const lo=r[0]==='AIF term loan';
+    return `<tr><td ${hi?'style="color:var(--green);font-weight:700"':''}>${r[0]}</td><td style="text-align:right" class="mono">₹${(r[1]/100000).toFixed(1)}L</td><td style="text-align:right" class="mono ${hi?'':''}">${(r[2]*100).toFixed(1)}%</td></tr>`;}).join('');
+  const note=document.getElementById('stackNote');
+  const marginL=(margin/100000).toFixed(1), save=(( (cost*0.20)-margin)/100000).toFixed(1);
+  note.innerHTML = cat==='GEN'
+    ? `<b>General category:</b> standard 20% promoter margin — ₹${marginL}L upfront. Switch to SC/ST or FPO to see the stack cut it to 8.3%.`
+    : `<b>${cat} promoter:</b> optimal stack cuts promoter margin to <b style="color:var(--green)">₹${marginL}L (8.3%)</b> — saves <b style="color:var(--green)">₹${save}L</b> vs general 20%. ${capped?'<b style="color:var(--amber)">Subsidy hit the 50% cap — pro-rata applied.</b>':'Subsidy 31.25% &lt; 50% cap ✓'} MIDH & PMFME correctly not stacked on the same cost line.`;
+}
+function revealBureau(){
+  const o=document.getElementById('bureauOut');o.style.display='block';
+  o.innerHTML=`<div class="card wf" style="font-size:11.5px">
+    <div class="kv"><span><b>Total liability (all sources)</b></span><span class="mono" style="color:var(--red)"><b>₹16.0 L</b></span></div>
+    <div class="kv"><span>Reported to ALL 4 bureaus</span><span class="mono">₹3.0 L (SBI KCC)</span></div>
+    <div class="kv"><span>Reported to SOME only</span><span class="mono">₹13.0 L</span></div>
+    <div class="kv" style="color:var(--amber)"><span>⚠ Undisclosed in application</span><span>Muthoot ₹2L (Experian only) · Coop ₹4L (CRIF only)</span></div>
+    <div style="margin-top:8px;color:var(--amber);font-weight:600">→ Obtain statements · recompute DSCR incl. these EMIs · still ≥1.25 → proceed.</div>
+    <div class="muted" style="font-size:10.5px;margin-top:4px">Single-bureau lending would have missed ₹6 L. Four bureaus, reconciled, catch it.</div>
+  </div>`;
+}
+function revealEWS(){document.getElementById('ewsOut').style.display='block';document.getElementById('ewsIdle').style.display='none';}
+
+/* Run the full 27-agent swarm */
+function runSwarm(){
+  if(running)return;running=true;
+  const box=document.getElementById('trace');box.innerHTML='';
+  const btn=document.getElementById('runBtn');btn.disabled=true;btn.textContent='● running…';
+  document.querySelectorAll('.acard').forEach(c=>c.classList.remove('run','ok'));
+  let agentPtr=0;
+  TRACE.forEach((t,i)=>{
+    setTimeout(()=>{
+      const cls=t[3]?('l '+t[3]):'l';
+      const div=document.createElement('div');div.className=cls;
+      div.innerHTML=`<span class="ph">P${t[0]}</span><span class="tg">${t[1]}</span><span class="tm">${t[2]}</span>`;
+      box.appendChild(div);box.scrollTop=box.scrollHeight;
+      // light up agent cards progressively
+      if(t[3]!=='big'){ const card=document.getElementById('ag-'+agentPtr); if(card){card.classList.add('run');setTimeout(()=>{card.classList.remove('run');card.classList.add('ok');},500);} if(agentPtr<AGENTS.length-1)agentPtr++; }
+      if(i===TRACE.length-1){btn.disabled=false;btn.textContent='▶ Re-run all 27 agents';running=false;document.querySelectorAll('.acard').forEach(c=>c.classList.add('ok'));toast('✅ <b>27 agents complete.</b> Recommendation: SANCTION · 3 conditions precedent. The fraud agent HALTED on round-tripping and routed to a human. Full trail in 🛡 Governance &amp; audit.');}
+    }, i*300);
+  });
+}
+
+/* ============================================================ v3 · WHY-THIS-MATTERS SCREENS (for the credit manager) ============================================================ */
+function rVillain(){return `<div class="screen" id="sc-villain">
+  <div class="eyebrow" style="color:var(--red)">Before the solution · meet the villain</div>
+  <h1>Why a credit manager is stuck in 90-day hell</h1>
+  <div class="sub">You are the bank's scarcest, most accountable person — and 92% of your day is clerical reconstruction. First, know the enemy.</div>
+  <div class="grid2">
+    <div class="card" style="border-color:rgba(251,113,133,.3)"><div class="card-title" style="color:var(--red)">👿 The 90-day hellscape — one AIF file</div>
+      <div class="kv"><span class="k">Wk 1–2</span><span class="v">Borrower uploads 29 docs · you wait, chase, follow up</span></div>
+      <div class="kv"><span class="k">Wk 2–3</span><span class="v">You collect KYC + land records · you retype into the LOS</span></div>
+      <div class="kv"><span class="k">Wk 3–4</span><span class="v">Field officer visits land · you wait for the report</span></div>
+      <div class="kv"><span class="k">Wk 4–6</span><span class="v">Panel advocate — 14–21 days for a 15-page LSR</span></div>
+      <div class="kv"><span class="k">Wk 4–6</span><span class="v">Panel valuer — 7–14 days</span></div>
+      <div class="kv"><span class="k">Wk 3–5</span><span class="v">DPR appraisal — 14–30 days</span></div>
+      <div class="kv"><span class="k">Wk 5–7</span><span class="v">State approvals — 6 permits, tracked by hand</span></div>
+      <div class="kv"><span class="k">Wk 7–10</span><span class="v">You assemble 8 reports into one memo — 14–21 days</span></div>
+      <div class="kv" style="color:var(--red);font-weight:700"><span class="k">TOTAL</span><span class="v">30–90 days · ₹1.05–2.75 L / file</span></div>
+    </div>
+    <div class="card" style="border-color:rgba(251,191,36,.3)"><div class="card-title" style="color:var(--amber)">📊 Where your time actually goes</div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-top:6px"><span>Investigation (clerical reconstruction)</span><span style="color:var(--red);font-weight:800">92%</span></div>
+      <div class="progress" style="height:12px"><i style="width:92%;background:var(--red)"></i></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-top:10px"><span>Judgment (the credit call — only YOU)</span><span style="color:var(--green);font-weight:800">8%</span></div>
+      <div class="progress" style="height:12px"><i style="width:8%;background:var(--green)"></i></div>
+      <div class="card" style="margin-top:12px;background:var(--s2);border:none;font-size:13px">The real question isn't “can AI decide?” — it's <b style="color:var(--tx)">“why are YOU doing the 92%?”</b></div>
+      <div style="margin-top:10px;padding:9px;border-radius:8px;background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);font-size:12px"><b style="color:var(--red)">~50%</b> of agri-project loans are rejected — not because projects are bad, but because the paperwork is incomplete.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;border-color:rgba(251,113,133,.25)"><div class="card-title" style="color:var(--red)">💀 The five biases you can't escape (no human can)</div>
+    <div class="grid3">
+      <div class="bcard"><b>Anchoring</b><div class="muted" style="font-size:11px">“₹10 crore project” sets the frame before the evidence</div></div>
+      <div class="bcard"><b>Confirmation</b><div class="muted" style="font-size:11px">you form an opinion before reading all the docs</div></div>
+      <div class="bcard"><b>Availability</b><div class="muted" style="font-size:11px">recent failures loom larger than the data</div></div>
+      <div class="bcard"><b>Authority</b><div class="muted" style="font-size:11px">you trust the CA stamp, not the numbers</div></div>
+      <div class="bcard"><b>Complexity</b><div class="muted" style="font-size:11px">100 documents = more confusion, not clarity</div></div>
+      <div class="bcard" style="border-color:rgba(52,211,153,.35)"><b style="color:var(--green)">The fix →</b><div class="muted" style="font-size:11px">agents run the 92%; a sharper, evidence-linked question reaches you</div></div>
+    </div>
+  </div>
+</div>`;}
+
+function rExplainer(){return `<div class="screen" id="sc-explainer">
+  <div class="eyebrow">In plain English · for a credit manager</div>
+  <h1>What is an AI agent — and how does it help YOUR judgment?</h1>
+  <div class="sub">No jargon. An AI agent is like a tireless junior analyst: works 24/7, never cuts corners, and always stops for your sign-off.</div>
+  <div class="grid2">
+    <div class="card"><div class="card-title">💬 Chatbot vs 🤖 AI agent</div>
+      <table class="tb"><thead><tr><th>A chatbot…</th><th>An AI agent…</th></tr></thead><tbody>
+        <tr><td>answers a question</td><td><b style="color:var(--green)">takes action</b></td></tr>
+        <tr><td>waits for prompts</td><td><b style="color:var(--green)">plans &amp; executes</b></td></tr>
+        <tr><td>forgets everything</td><td><b style="color:var(--green)">remembers what it did</b></td></tr>
+        <tr><td>can't use tools</td><td><b style="color:var(--green)">calls APIs · reads docs · checks bureaus</b></td></tr>
+        <tr><td>stops after one reply</td><td><b style="color:var(--green)">keeps going till the job's done</b></td></tr>
+      </tbody></table>
+      <div style="margin-top:8px;font-size:11.5px;color:var(--mut)">A chatbot is a receptionist. An agent is an analyst who investigates the case, gathers the evidence, writes the memo — and hands <b style="color:var(--tx)">you</b> the decision.</div>
+    </div>
+    <div class="card"><div class="card-title">🧠 The 5 parts of every agent</div>
+      <div class="kv"><span class="k">1 · The brain (LLM)</span><span class="v" style="font-weight:500;color:#c9d4e6">reads &amp; reasons · on YOUR servers</span></div>
+      <div class="kv"><span class="k">2 · The instructions</span><span class="v" style="font-weight:500;color:#c9d4e6">its job description = your credit policy</span></div>
+      <div class="kv"><span class="k">3 · The tools</span><span class="v" style="font-weight:500;color:#c9d4e6">ULI · OCR · Neo4j · e-Courts · CIBIL</span></div>
+      <div class="kv"><span class="k">4 · The memory</span><span class="v" style="font-weight:500;color:#c9d4e6">what it verified · patterns it has seen</span></div>
+      <div class="kv"><span class="k">5 · The human gate</span><span class="v" style="font-weight:500;color:var(--amber)">where it STOPS for you</span></div>
+      <div style="margin-top:10px;font-size:11.5px;color:var(--mut)">“If title gap &gt; 5 years → STOP, alert the panel advocate.” “If fraud pattern → do NOT decide, escalate.” “If confidence &lt; 80% → ask a human.”</div>
+    </div>
+  </div>
+  <div class="bigrule" style="margin-top:14px">
+    <div class="eyebrow" style="color:var(--fab2)">the non-negotiable rule</div>
+    <div style="font-size:26px;font-weight:800;margin-top:4px">The LLM investigates. <span style="color:var(--green)">YOU decide.</span></div>
+    <div class="muted" style="font-size:12.5px;margin-top:5px">Generative AI reads the messy 7/12, reconciles GST↔ITR, drafts the memo. A deterministic model computes the score. An AI agent <b style="color:var(--tx)">never makes the final credit decision</b> — that stays your 8%.</div>
+  </div>
+  <div class="card highlight" style="margin-top:12px"><b>This is exactly how Perfios CAM AI works:</b> “only a few hundred expert analysts could reconcile GST sales with bank deposits across thousands of applications — CAM AI now does that expert scrutiny autonomously and at scale, with <b style="color:var(--tx)">source traceability on every insight</b>.”</div>
+</div>`;}
+
+function rPillars(){return `<div class="screen" id="sc-pillars">
+  <div class="eyebrow">Inspired by · built for Indian banking</div>
+  <h1>Two proven pillars: Ant Finance + Palantir</h1>
+  <div class="sub">This isn't a science project. The world's most advanced lenders already rebuilt lending around AI agents — Finclus brings that pattern inside your bank.</div>
+  <div class="grid2">
+    <div class="card" style="border-color:rgba(34,211,238,.3)"><div class="card-title" style="color:var(--cyan)">🐜 Pillar 1 · Ant Finance (MYbank)</div>
+      <div style="font-size:15px;font-weight:700;margin:4px 0">The “310” model — <span style="color:var(--cyan)">3-min approve · 1-sec disburse · 0 human touch</span></div>
+      <div class="kv"><span class="k">Decision variables</span><span class="v">3,000+ (not just a bureau score)</span></div>
+      <div class="kv"><span class="k">AI ↔ officer alignment</span><span class="v" style="color:var(--green)">39% → 90%</span></div>
+      <div class="kv"><span class="k">Data</span><span class="v">multi-source · real-time · deep learning</span></div>
+      <div style="margin-top:8px;font-size:11.5px;color:var(--mut)">They didn't “add AI” to lending. They <b style="color:var(--tx)">rebuilt lending around AI</b> — humans supervising, not typing.</div>
+    </div>
+    <div class="card" style="border-color:rgba(139,92,246,.3)"><div class="card-title" style="color:var(--fab)">🔷 Pillar 2 · Palantir (Ontology)</div>
+      <div style="font-size:15px;font-weight:700;margin:4px 0">Institutional policy → <span style="color:var(--fab2)">machine-readable, auditable rules</span></div>
+      <div style="font-size:12.5px;color:#c9d4e6;margin:6px 0">Fannie Mae (May 2025): <i>“It took our talented investigators <b style="color:var(--red)">60 days</b> to detect fraud in two files. It took the technology <b style="color:var(--green)">seconds</b>.”</i> <span class="muted" style="font-size:10px">(figure as reported)</span></div>
+      <div class="kv"><span class="k">The pattern</span><span class="v">AI investigates in parallel · humans decide</span></div>
+      <div class="kv"><span class="k">SOMPO / AIG</span><span class="v">LLM agents evaluate risk in underwriting</span></div>
+      <div style="margin-top:8px;font-size:11.5px;color:var(--mut)">Not “AI replaces humans.” <b style="color:var(--tx)">AI does the investigation; humans make the call.</b> Exactly what Finclus delivers.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="card-title">📈 The proof already exists in credit underwriting</div>
+    <div class="grid4">
+      <div class="stat"><div class="n" style="color:var(--cyan)">85%</div><div class="l">Perfios CAM AI — faster underwriting · 2× loans</div></div>
+      <div class="stat"><div class="n" style="color:var(--green)">70%</div><div class="l">nCino — credit-review time cut</div></div>
+      <div class="stat"><div class="n" style="color:var(--fab2)">18,000+</div><div class="l">Fenergo — analyst hours saved / year</div></div>
+      <div class="stat"><div class="n" style="color:var(--amber)">75–80%</div><div class="l">LUMIQ LEO — cases with zero human touch</div></div>
+    </div>
+  </div>
+  <div class="card highlight" style="margin-top:12px"><b>The Finclus thesis:</b> take the Ant Finance scale + the Palantir judgment pattern, run it <b style="color:var(--tx)">inside your bank's VPC</b> on Indian rails (ULI · AA · UDIN · CERSAI), tuned to <b style="color:var(--tx)">your</b> credit policy. 27 agents run the 92%. You own the 8%.</div>
+</div>`;}
+
+/* ============================================================ v2 · PRODUCTION LOS REALISM LAYER ============================================================ */
+/* --- persistent case bar + origination stepper --- */
+const STEPS=[["Applied","done"],["KYC & Verify","done"],["Appraisal","cur"],["Sanction",""],["Disbursal",""],["Servicing",""]];
+function renderCaseBar(){
+  let step=`<div class="stepper">`;
+  STEPS.forEach((s,i)=>{ const cl=s[1]; const mk=cl==='done'?'✓':(i+1);
+    step+=`<div class="st ${cl}"><span class="dot">${mk}</span><span class="lb">${s[0]}</span></div>`;
+    if(i<STEPS.length-1) step+=`<div class="ln ${cl==='done'?'done':''}"></div>`; });
+  step+=`</div>`;
+  document.getElementById('casebar').innerHTML=`
+    <div class="cbtop">
+      <div class="av">SL</div>
+      <div><div class="nm">${CASE.borrower}</div>
+        <div class="cmeta">${CASE.arn} · PAN ${CASE.pan} · GSTIN ${CASE.gstin} · ${CASE.project}</div></div>
+      <div class="amt"><div class="a">${CASE.ask}</div><div class="l">of ${CASE.cost} project</div></div>
+      <div class="sla"><div class="a">Day 1 / 7</div><div class="l">SLA · appraisal</div></div>
+      <div class="sla"><div class="a" style="color:var(--fab2)">762<span style="font-size:10px;color:var(--mut)">/850</span></div><div class="l">AI pre-score</div></div>
+    </div>${step}`;
+}
+/* --- evidence room: real source documents with provenance --- */
+function doc(title,ico,src,rows,stampHtml){
+  return `<div class="doc"><div class="dt">${ico} ${title}</div><div class="src">${src}</div>`+
+    rows.map(r=>`<div class="rowd"><span class="kd">${r[0]}</span><span class="vd">${r[1]}</span></div>`).join('')+
+    `<div class="stamp" style="margin-top:11px;padding-top:9px;border-top:1px solid #e3e9f2;font-family:-apple-system,sans-serif;font-size:9.5px;color:#5a6b86">${stampHtml||''}</div></div>`;
+}
+function prov(o){return `<div class="prov">SOURCE <b>${o.s}</b> · CONSENT <b>${o.c}</b> · FETCHED <b>${o.t}</b> · PURPOSE <b>underwriting</b> · SHA-256 <b>${o.h}</b></div>`;}
+const EVIDENCE={
+  cibil:()=>doc("Multi-Bureau Credit Report","📇","TransUnion CIBIL · CRIF · Experian · Equifax — pulled via ULI",
+    [["Entity","Sri Lakshmi Agro Industries Pvt Ltd"],["Commercial CMR","CMR-4 (satisfactory)"],["CIBIL score","712"],["Experian","718"],["CRIF Highmark","705"],["Reported liability (CIBIL)","₹8.5 L"],["Reconciled liability (4 bureaus)","₹16.0 L"],["Undisclosed loans found","Muthoot ₹2L · Coop ₹4L"],["DPD 24 months","Nil"],["Cheque returns","0.4%"]],
+    `<span class="verified">✓ 4/4 bureaus pulled</span> &nbsp; <span class="flagd verified" style="background:#fdece6;color:#b4451f;border-color:#f2c3ac">⚠ ₹6 L undisclosed</span>`)+prov({s:"ULI → 4 CICs",c:"AA-CONS-88f2",t:"11-Aug-2026 09:14",h:"a3f1…c7d9"}),
+  udin:()=>doc("UDIN Verification — ICAI Portal","🔐","udin.icai.org · document authenticity check",
+    [["UDIN","23AAGCS4471Q8H12"],["Document","Net-Worth Certificate"],["CA","Rajesh Kumar · M.No. 123456"],["Membership","Active · no disciplinary action"],["Certified on","15-Mar-2026"],["Valid until","15-Jun-2026"],["Genuineness","Verified on portal"]],
+    `<span class="verified">✓ UDIN active & genuine</span> &nbsp; 7 of 7 certificates verified`)+prov({s:"ICAI UDIN portal",c:"public verify",t:"11-Aug-2026 09:15",h:"b8e2…41aa"}),
+  land7_12:()=>doc("Record of Rights (7/12 / Pahani)","🗺️","Telangana Dharani portal · OCR (Telugu) + mutation chain",
+    [["Survey No.","247, Karimnagar"],["Extent","2.40 acres"],["Holder","Sri Lakshmi Agro (2025)"],["Land classification","Industrial-converted"],["Mutation chain","1988 A→B→C→D→E→current"],["⚠ Chain gap","1998–2002 link doc missing"],["Encumbrance (30-yr)","1 satisfied mortgage (SBI 2015)"],["CERSAI charge","⚠ existing SBI charge"]],
+    `<span class="verified flagd" style="background:#fdece6;color:#b4451f;border-color:#f2c3ac">⚠ Indemnity bond + SBI NOC (CP)</span>`)+prov({s:"Dharani + CERSAI",c:"consent OTP",t:"11-Aug-2026 09:18",h:"c1d4…9f02"}),
+  gst:()=>doc("GST Returns — GSTR-3B / GSTR-1","📊","GSTN via Account Aggregator",
+    [["GSTIN","36AAGCS4471Q1Z8"],["Filing status","Regular · current"],["Turnover FY26","₹4.2 Cr"],["YoY growth","+18%"],["GST↔ITR variance","3.6% (in tolerance)"],["ITC anomalies","None"],["E-way bills / yr","1,204"]],
+    `<span class="verified">✓ Filed & reconciled</span>`)+prov({s:"GSTN (AA)",c:"AA-CONS-88f2",t:"11-Aug-2026 09:16",h:"d9a7…3b18"}),
+  valuation:()=>doc("Valuation Report — IBBI Valuer","💰","IGR guidance + registered comparables + Sentinel-2 GIS",
+    [["Guidance value (IGR)","₹450/sq.ft"],["Avg comparable (3 deeds)","₹487/sq.ft"],["GIS adj (road/mandi)","+12%"],["Fair market value","₹472/sq.ft"],["Forced sale value (80%)","₹378/sq.ft"],["Land area","5,000 sq.ft"],["Security value (FSV)","₹18.90 L"],["Asset cover","1.51×"]],
+    `<span class="verified">✓ UDIN-verified valuer</span> &nbsp; cover 1.51× ≥ 1.25× policy`)+prov({s:"IGR + Sentinel-2",c:"n/a (public)",t:"11-Aug-2026 09:22",h:"e2c5…7d41"}),
+  aa:()=>doc("Bank Statement Analysis (12-mo)","🏦","Account Aggregator · 3 banks · Perfios BSA",
+    [["Accounts linked","3 (2 CA · 1 CC)"],["Avg monthly credits","₹42,000"],["Avg monthly debits","₹23,500"],["Monthly surplus","₹18,500"],["⚠ Unexplained credit","₹45k/mo · unknown source"],["Undisclosed EMI (Muthoot)","₹14.5k/mo"],["Cheque-return ratio","0.4%"],["Inflow stability","seasonal"]],
+    `<span class="verified">✓ AA consent · tamper-checked</span>`)+prov({s:"Account Aggregator",c:"AA-CONS-88f2",t:"11-Aug-2026 09:16",h:"f4b8…2e90"}),
+  sanction:()=>doc("Sanction Recommendation","📜","Synthesis agent · assembled from 27 agents",
+    [["Decision","SANCTION with conditions"],["Amount","₹72.50 L"],["Effective rate","9.25% (post-AIF 3%)"],["Tenor · moratorium","7 yrs · 12 mo"],["DSCR (post-PDS levy)","1.38×"],["RAROC","18.2%"],["PD · LGD · EAD","2.3% · 35% · ₹73.9L"],["Conditions precedent","3 (rice-mill reg · SBI NOC · fraud clearance)"]],
+    `<span class="verified">✓ every figure source-linked</span> &nbsp; human owns the decision`)+prov({s:"Finclus synthesis",c:"internal",t:"11-Aug-2026 09:31",h:"09aa…b3c7"})
+};
+const EVDOCS=[["cibil","📇","Multi-bureau credit report","4 CICs · ₹6L undisclosed found","amber"],
+  ["udin","🔐","UDIN verification (ICAI)","7 certs · all genuine","green"],
+  ["land7_12","🗺️","7/12 Record of Rights","chain gap + SBI charge","red"],
+  ["valuation","💰","IBBI valuation report","asset cover 1.51×","green"],
+  ["gst","📊","GST returns (GSTN via AA)","filed · reconciled","green"],
+  ["aa","🏦","Bank statement analysis","12-mo · undisclosed EMI","amber"],
+  ["sanction","📜","Sanction recommendation","₹72.5L · 3 CPs","green"]];
+function openEv(key){
+  let body;
+  if(!key||key==='index'){
+    body=`<div style="font-size:12px;color:var(--mut);margin-bottom:10px">Every claim in this file is one click from its source document — with source, consent, timestamp and hash. This is the RBI-auditable “not a black box.”</div><div class="doclist">`+
+      EVDOCS.map(d=>`<div class="di" onclick="openEv('${d[0]}')"><span class="ic">${d[1]}</span><div><div class="dn">${d[2]}</div><div class="dm">${d[3]}</div></div><span class="st2 chip ${d[4]}">${d[4]==='green'?'✓':d[4]==='amber'?'!':'✕'}</span></div>`).join('')+`</div>`;
+    setDrawer("Evidence room","file AIF/TG/2026/03417 · 28 documents",body);
+  } else {
+    body=`<div style="margin-bottom:10px"><span class="ev" onclick="openEv('index')" style="font-size:11px">‹ all documents</span></div>`+EVIDENCE[key]();
+    setDrawer("Source document","provenance-stamped · consent-gated",body);
+  }
+}
+/* --- governance & audit trail drawer --- */
+const BASE=[9,14,2];
+function ts(i){let s=BASE[0]*3600+BASE[1]*60+BASE[2]+i*3;let hh=String(Math.floor(s/3600)).padStart(2,'0'),mm=String(Math.floor(s%3600/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');return hh+':'+mm+':'+ss;}
+function hash(i){return (['a3f1','b8e2','c1d4','d9a7','e2c5','f4b8','09aa','7dce','44b1','a90f','3e5c','bb27','ce81','12fa','5d3b','e77a','9c40','2ab8','f019','63d2','8e4c','1a7f','c5b9','40e3','db6a','7f21','a2c8','e9d0','34ba','af57','6c19'][i%31]);}
+function openGov(){
+  const rows=TRACE.map((t,i)=>`<div class="ar ${t[3]||''}"><span class="ts">${ts(i)}</span><span class="ag">${t[1]}</span><span class="msg">${t[2]}</span><span class="hs">#${hash(i)}</span></div>`).join('');
+  const body=`
+    <div class="card" style="margin-bottom:12px"><div class="card-title">🏛️ RBI FREE-AI · control map</div>
+      ${[["Trust · provenance","Evidence graph + hash on every claim"],["People First","Human-in-the-loop on every adverse action"],["Accountability","Named authority under DoP signs"],["Understandable","SHAP reason codes + RAG citations + UDIN"],["Fairness","Fairness tests in the CI/CD eval gate"],["Safety","Red-team + fallback to human queue"]].map(r=>`<div class="kv"><span class="k">${r[0]}</span><span class="v" style="font-weight:500;color:#c9d4e6">${r[1]}</span></div>`).join('')}
+    </div>
+    <div class="card" style="margin-bottom:12px"><div class="card-title">📜 Also mapped</div>
+      <div class="kv"><span class="k">Digital Lending Directions 2025</span><span class="v"><span class="chip green">KFS/APR · DLG ≤5%</span></span></div>
+      <div class="kv"><span class="k">DPDP Rules 2025</span><span class="v"><span class="chip green">consent · residency · 72h</span></span></div>
+      <div class="kv"><span class="k">Model risk</span><span class="v"><span class="chip green">MLflow · SR 11-7</span></span></div>
+      <div class="kv"><span class="k">Data residency</span><span class="v"><span class="chip green">in-VPC · no data leaves</span></span></div>
+    </div>
+    <div class="card"><div class="card-title">🔒 Immutable audit trail <span class="chip cyan">${TRACE.length} events · hash-chained</span></div>
+      <div class="audit">${rows}</div>
+      <div style="margin-top:10px;font-size:10.5px;color:var(--mut)">Every extraction, tool call and flag is timestamped and hash-chained. Click “Evidence room” to open any source document. This is what makes the AI decision reconstructable for a regulator.</div>
+    </div>`;
+  setDrawer("Governance & audit","RBI FREE-AI · DPDP · model risk · full trail",body);
+}
+function setDrawer(title,sub,body){
+  document.getElementById('drawer').innerHTML=`<div class="dh"><div><div class="dt2">${title}</div><div class="ds">${sub}</div></div><div class="x" onclick="closeDrawer()">×</div></div>${body}`;
+  document.getElementById('drawer').classList.add('on');document.getElementById('overlay').classList.add('on');
+}
+function closeDrawer(){document.getElementById('drawer').classList.remove('on');document.getElementById('overlay').classList.remove('on');}
+function toast(html){const w=document.getElementById('toastwrap');const t=document.createElement('div');t.className='toast';t.innerHTML=html;w.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='.4s';setTimeout(()=>t.remove(),400);},4200);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+
+render();
+renderCaseBar();
+setTimeout(()=>toast('🔍 <b>Evidence room</b> is live — click any 🔗 linked value, or open it from the top bar, to see the source document with provenance.'),900);
+</script>
+</body>
+</html>

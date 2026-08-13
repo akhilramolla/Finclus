@@ -6,5 +6,8 @@ coverage/
 tsconfig.tsbuildinfo
 e2e/screens/
 test-results/
+video_editor/work/
+video_editor/output/
 .env*
 !.env.example
+
