@@ -154,7 +154,7 @@ table.tb tr:hover td{background:var(--s1)}
 .stepper .ln{flex:1;height:2px;background:var(--line2);margin:0 6px}.stepper .ln.done{background:var(--green)}
 .ev{color:var(--cyan);cursor:pointer;border-bottom:1px dotted rgba(34,211,238,.5)}
 .ev:hover{color:#7fe9f7;border-bottom-style:solid}
-.ev:before{content:"🔗";font-size:8px;opacity:.7;margin-right:2px}
+.ev:before{content:"↗";font-size:9px;opacity:.7;margin-right:3px}
 .overlay{position:fixed;inset:0;background:rgba(2,4,10,.62);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.25s;z-index:80}
 .overlay.on{opacity:1;pointer-events:auto}
 .drawer{position:fixed;top:0;right:0;height:100vh;width:520px;max-width:93vw;background:var(--s1);border-left:1px solid var(--line2);box-shadow:-24px 0 70px rgba(0,0,0,.55);transform:translateX(102%);transition:transform .28s cubic-bezier(.4,0,.2,1);z-index:90;overflow-y:auto;padding:20px 22px}
@@ -493,6 +493,62 @@ table.tb tr:hover td{background:rgba(31,95,75,.04)!important}
 ::-webkit-scrollbar-thumb:hover{background:rgba(20,22,26,.2)}
 /* keep dark doc cards readable in light shell */
 .doc{box-shadow:var(--shadow-lg)!important}
+
+/* ===== INDIAN BANK CREDIT WORKBENCH · FINAL ===== */
+:root{
+  --bg:#eef2f6;--s1:#ffffff;--s2:#f5f7fa;--s3:#e8edf3;
+  --line:#dce3eb;--line2:#c8d2de;
+  --tx:#172033;--mut:#5d6b7e;--mut2:#8995a6;
+  --fab:#126e82;--fab2:#0d5b6d;--cyan:#087d91;--green:#16835b;
+  --amber:#b56408;--red:#b23b3b;--blue:#175cd3;--ink:#101828;
+  --paper:#fff;--mist:#eaf4f5;--glow:transparent;
+  --r:8px;--shadow:0 1px 2px rgba(16,24,40,.04);--shadow-lg:0 8px 24px rgba(16,24,40,.08);
+}
+body{background:var(--bg)!important;color:var(--tx)!important;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;font-size:13px!important}
+.app{width:100vw!important;min-width:0!important}
+.topbar{height:58px!important;background:#0b1f3a!important;border-bottom:1px solid #183555!important;box-shadow:none!important;padding:0 20px!important;color:#fff}
+.topbar .logo{width:30px!important;height:30px!important;background:#fff!important;color:#0b1f3a!important;border-radius:6px!important;box-shadow:none!important;font-size:0!important}
+.topbar .logo:after{content:"F";font-size:15px;font-weight:800}
+.topbar .bk{color:#fff!important;font-size:13px!important}.topbar .bk small{color:#9fb0c6!important}
+.topbar .crumb{color:#9fb0c6!important;margin-left:8px}.topbar .crumb b{color:#eef5ff!important}
+.topbar .env{margin-left:auto!important;background:#132f4f!important;border:1px solid #274765!important;color:#b9dfd5!important;border-radius:5px!important;padding:5px 8px!important;letter-spacing:.03em}
+.topbar .env .dot{background:#52c79c!important;box-shadow:none!important;animation:none!important}
+.topbar .tbtn{background:transparent!important;border:1px solid #38516d!important;color:#d7e0eb!important;border-radius:6px!important;box-shadow:none!important;padding:7px 10px!important}
+.topbar .tbtn:hover{background:#183555!important;border-color:#54708d!important;color:#fff!important}
+.topbar .bell{color:#d7e0eb}.topbar .bell .cnt{background:#d97018!important}
+.topbar .rm{border-left:1px solid #38516d;padding-left:12px}.topbar .rm .av{background:#e8f3f1!important;border:none!important;color:#0d5b6d!important}.topbar .rm .nm{color:#fff!important}.topbar .rm .rl{color:#9fb0c6!important}
+.version-switch{background:#07172b!important;border:1px solid #38516d!important;border-radius:6px!important;box-shadow:none!important;margin-left:4px}
+.version-switch a{color:#9fb0c6!important;border-radius:4px!important}.version-switch a:hover{background:#183555!important;color:#fff!important}.version-switch a.on{background:#fff!important;color:#0b1f3a!important;box-shadow:none!important}
+.sidebar{width:248px!important;background:#0e2541!important;border-right:1px solid #183a5d!important;box-shadow:none!important;padding:18px 12px!important}
+.brand{color:#fff!important;font-size:17px!important;padding:0 8px 15px!important;border-bottom:1px solid #254361;margin-bottom:12px!important}.brand span{color:#80d2ca!important}.brand .b100{background:#1b4860!important;color:#c8ece7!important;box-shadow:none!important;border-radius:4px!important}.brand .sub{color:#8da4bc!important}
+.navsec{color:#6f8ba6!important;font-size:8px!important;margin:15px 10px 5px!important}
+.nav-item{color:#b8c6d5!important;border-radius:6px!important;padding:8px 10px!important;margin-bottom:2px!important;gap:9px!important}
+.nav-item:hover{background:#163451!important;color:#fff!important}.nav-item.active{background:#fff!important;color:#102a45!important;box-shadow:none!important;border:none!important;font-weight:700!important}
+.nav-item .ic{width:24px!important;height:20px;display:grid;place-items:center;font-family:var(--mono);font-size:9px!important;font-weight:700;border:1px solid #3b5873;border-radius:4px;color:#8eb5c0}
+.nav-item.active .ic{background:#e8f3f4;border-color:#b9d7dc;color:#0d6577}.nav-item .bd{background:transparent!important;color:#6f8ba6!important}.nav-item.active .bd{background:transparent!important;color:#64748b!important}
+.sidebar-footer{border-top:1px solid #254361!important;color:#7891aa!important;padding:14px 8px 0!important;line-height:1.65!important}.sidebar-footer b{color:#b8c6d5!important}
+.casebar{background:#fff!important;border-bottom:1px solid var(--line)!important;box-shadow:none!important;padding:12px 30px 10px!important;backdrop-filter:none!important}
+.casebar .av{background:#0d6679!important;color:#fff!important;border-radius:6px!important;box-shadow:none!important}.casebar .nm{color:var(--ink)!important;font-size:15px!important}.casebar .cmeta{color:#718096!important}.casebar .amt .a{color:#0d6679!important}.casebar .sla .a{color:#344054!important}.casebar .sla{border-left-color:var(--line)!important}
+.stepper{margin-top:9px!important}.stepper .st .dot{width:18px!important;height:18px!important;background:#fff!important;border:1px solid #cbd5e1!important;color:#7b8797!important}.stepper .st.done .dot{background:#16835b!important;border-color:#16835b!important;color:#fff!important}.stepper .st.cur .dot{background:#0d6679!important;border-color:#0d6679!important;color:#fff!important;box-shadow:0 0 0 3px #d9eef0!important;animation:none!important}.stepper .st .lb{color:#718096!important}.stepper .st.done .lb,.stepper .st.cur .lb{color:#344054!important}.stepper .ln{background:#dbe2ea!important}.stepper .ln.done{background:#62a88d!important}
+.maincontent{background:#eef2f6!important;padding:24px 30px 44px!important}.screen{max-width:1320px;animation:none!important}
+h1{color:#172033!important;background:none!important;-webkit-text-fill-color:initial!important;font-size:25px!important;line-height:1.25!important;font-weight:720!important;letter-spacing:-.35px!important;margin-bottom:5px!important}.eyebrow{color:#0d6679!important;font-size:9px!important;font-weight:750!important;letter-spacing:.12em!important;margin-bottom:7px!important}.sub{color:#667085!important;font-size:13px!important;max-width:76ch!important;margin-bottom:18px!important}
+.card{background:#fff!important;border:1px solid var(--line)!important;border-radius:8px!important;box-shadow:var(--shadow)!important;padding:16px!important;transform:none!important}.card:hover{border-color:#c8d2de!important;box-shadow:var(--shadow)!important;transform:none!important}.card-title{color:#27364a!important;font-size:12px!important;font-weight:700!important;margin-bottom:11px!important}
+.grid2{gap:12px!important}.grid3{gap:10px!important}.grid4{gap:10px!important}.g12,.g21{gap:12px!important}
+.kv{border-bottom:1px solid #edf0f4!important;padding:6px 0!important}.kv .k{color:#667085!important}.kv .v{color:#27364a!important}
+.chip{border-radius:4px!important;font-size:8px!important;letter-spacing:.03em!important;padding:2px 6px!important}.pill{border-radius:5px!important;background:#fff!important}
+.btn{background:#fff!important;border:1px solid #c8d2de!important;color:#344054!important;border-radius:6px!important;box-shadow:none!important}.btn:hover{background:#f8fafc!important;border-color:#98a7b8!important;color:#172033!important;transform:none!important}.btn.primary{background:#0d6679!important;border-color:#0d6679!important;color:#fff!important;border-radius:6px!important;box-shadow:none!important}.btn.primary:hover{background:#0a5667!important;color:#fff!important;filter:none!important;transform:none!important}
+.hl,.card.highlight,.highlight{background:#f6fafb!important;border:1px solid #d6e8eb!important;border-left:3px solid #0d6679!important;border-radius:6px!important}.bigrule{background:#f6fafb!important;border:1px solid #d6e8eb!important;border-radius:8px!important}.bcard{background:#f8fafc!important;border-color:#e2e8f0!important;border-radius:6px!important}
+.trace{background:#0b1728!important;border:1px solid #24364d!important;border-radius:7px!important;box-shadow:none!important;color:#c7d2e0!important}.trace .l .tg{color:#73c6bc!important}.trace .l .ph{color:#718096!important}
+.phase-hdr{margin:17px 0 8px!important}.phase-hdr:before{background:#0d6679!important}.phase-hdr .pn{color:#0d6679!important}.phase-hdr .pt{color:#27364a!important}.phase-hdr .pl{color:#8995a6!important}
+.agrid{gap:8px!important}.acard{background:#fff!important;border:1px solid #dce3eb!important;border-radius:7px!important;box-shadow:none!important}.acard:hover{border-color:#98a7b8!important;box-shadow:none!important;transform:none!important}.acard.run{border-color:#0d6679!important;box-shadow:0 0 0 2px #d9eef0!important;animation:none!important}.acard.ok{background:#f4faf7!important;border-color:#bcdaca!important}.acard .an{color:#27364a!important}.acard .af{color:#667085!important}.acard .at,.acard .num{color:#8995a6!important}.acard .ahelp{color:#39745e!important;border-top-color:#e7ecf1!important;font-style:normal!important}
+table.tb th{background:#f8fafc;color:#718096!important;border-bottom:1px solid #dce3eb!important;padding:8px 9px!important}table.tb td{color:#475467!important;border-bottom:1px solid #edf0f4!important}table.tb td b{color:#27364a!important}table.tb tr:hover td{background:#f8fafc!important}
+.stat{padding:12px!important}.stat .n{font-size:24px!important;color:#172033}.gauge{box-shadow:none!important}.gauge .in{background:#fff!important}.progress,.bar .tr{background:#e8edf3!important}.wf{background:#fff8f7!important;border:1px solid #efcbc5!important;border-radius:7px!important}
+.drawer{background:#fff!important;border-left:1px solid #c8d2de!important;box-shadow:-16px 0 40px rgba(16,24,40,.14)!important}.overlay{background:rgba(15,23,42,.42)!important;backdrop-filter:none!important}.drawer .dh .dt2{color:#172033!important}.doclist .di{background:#f8fafc!important;border-color:#dce3eb!important}.toast{background:#fff!important;color:#172033!important;border-color:#dce3eb!important;border-left-color:#0d6679!important;box-shadow:0 12px 32px rgba(16,24,40,.16)!important}.sim-banner{bottom:10px!important;background:#fff!important;border:1px solid #d9a75d!important;color:#8a4d05!important;border-radius:5px!important;box-shadow:0 2px 8px rgba(16,24,40,.08)!important;backdrop-filter:none!important}
+.review-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:18px}.review-actions{display:flex;gap:8px;flex-shrink:0}.decision-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(330px,.8fr);gap:12px}.risk-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:8px;background:#fff;margin-bottom:12px}.risk-metric{padding:14px 16px;border-right:1px solid var(--line)}.risk-metric:last-child{border-right:none}.risk-metric .rl{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#718096;font-weight:700}.risk-metric .rv{margin-top:4px;font-size:20px;line-height:1;font-weight:750;color:#172033}.risk-metric .rn{margin-top:5px;font-size:10px;color:#718096}.review-list{display:flex;flex-direction:column}.review-item{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;padding:11px 0;border-bottom:1px solid #edf0f4}.review-item:last-child{border-bottom:none}.review-item .ri{width:24px;height:24px;border-radius:4px;display:grid;place-items:center;font-family:var(--mono);font-size:9px;font-weight:800}.review-item .ri.red{background:#fff0ed;color:#b23b3b}.review-item .ri.amber{background:#fff7e8;color:#9b5707}.review-item .ri.green{background:#edf8f2;color:#16835b}.review-item .rt{font-size:12px;font-weight:700;color:#27364a}.review-item .rd{font-size:10.5px;color:#718096;margin-top:2px;line-height:1.45}.review-item .ra{font-size:10px;color:#0d6679;font-weight:700;cursor:pointer;white-space:nowrap}.fact-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:22px}.section-kicker{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#718096;font-weight:750;margin-bottom:3px}.status-line{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 11px;border-radius:6px;background:#f6fafb;border:1px solid #d6e8eb;font-size:11px;color:#475467}.status-line b{color:#0d6679}
+@media(max-width:1000px){.decision-grid{grid-template-columns:1fr}.review-head{display:block}.review-actions{margin-top:12px}.risk-strip{grid-template-columns:1fr 1fr}.risk-metric:nth-child(2){border-right:none}.risk-metric:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media(max-width:1150px){.sidebar{width:76px!important}.topbar .crumb,.topbar .env{display:none}.maincontent{padding:20px!important}}
+@media(max-width:900px){.topbar .bk small,.topbar .rm,.topbar .bell{display:none}.topbar{gap:7px!important;padding:0 10px!important}.casebar{padding:10px 14px!important}.casebar .sla{display:none}.maincontent{padding:16px!important}.agrid{grid-template-columns:1fr 1fr!important}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -501,19 +557,20 @@ table.tb tr:hover td{background:rgba(31,95,75,.04)!important}
     <div class="logo">▲</div>
     <div class="bk">Bharat Agri Bank<small>Credit Origination · AIF Desk</small></div>
     <div class="crumb">Applications › AIF › <b>AIF/TG/2026/03417</b></div>
-    <div class="env"><span class="dot"></span>IN-VPC · AIR-GAPPED · NO DATA LEAVES</div>
-    <div class="tbtn" onclick="openGov()">🛡 Governance &amp; audit</div>
-    <div class="tbtn" onclick="openEv('index')">🔍 Evidence room</div>
-    <div class="bell" onclick="openGov()">🔔<span class="cnt" id="bellCnt">3</span></div>
+    <div class="version-switch" aria-label="Experience version"><a href="/1">1</a><a href="/2">2</a><a class="on" href="/3" title="AIF credit workbench">3</a></div>
+    <div class="env"><span class="dot"></span>PRIVATE VPC</div>
+    <div class="tbtn" onclick="openGov()">Governance &amp; audit</div>
+    <div class="tbtn" onclick="openEv('index')">Evidence room</div>
+    <div class="bell" onclick="openGov()">Alerts<span class="cnt" id="bellCnt">3</span></div>
     <div class="rm"><div class="av">RK</div><div><div class="nm">R. Kumar</div><div class="rl">Credit Officer · Maker</div></div></div>
   </div>
   <div class="row">
     <div class="sidebar">
-      <div class="brand">Finclus <span>AIF</span><span class="b100">27 agents</span>
-        <span class="sub">Live underwriting demo · in-VPC</span></div>
+      <div class="brand">Finclus <span>AIF</span><span class="b100">27 controls</span>
+        <span class="sub">Credit appraisal workbench</span></div>
       <div id="nav"></div>
       <div class="sidebar-footer">
-        <b>⚡ Air-gapped · in your VPC</b><br>🏛️ RBI FREE-AI · DPDP<br>🔐 UDIN + SHAP + audit trail<br>👤 Human owns every decision
+        <b>Private deployment</b><br>RBI FREE-AI · DPDP<br>UDIN · explainability · audit trail<br>Human authority required
       </div>
     </div>
     <div class="main">
@@ -716,20 +773,20 @@ const TRACE=[
 
 /* ============================================================ NAV ============================================================ */
 const SCREENS=[
-  {id:"villain",ic:"👿",lb:"The Villain",sec:"Why this matters"},
-  {id:"explainer",ic:"🤖",lb:"AI Agents, explained",sec:"Why this matters"},
-  {id:"pillars",ic:"🏛️",lb:"Ant Finance + Palantir",sec:"Why this matters"},
-  {id:"overview",ic:"📊",lb:"Overview",sec:"Case"},
-  {id:"checklist",ic:"📑",lb:"22-Point Checklist",sec:"Case"},
-  {id:"swarm",ic:"🤖",lb:"27-Agent Swarm · RUN",sec:"Case"},
-  {id:"bre",ic:"🚦",lb:"1 · BRE Gates",sec:"Pipeline"},
-  {id:"identity",ic:"🪪",lb:"2 · Identity & Bureaus",sec:"Pipeline"},
-  {id:"collateral",ic:"⚖️",lb:"3 · Collateral & Legal",sec:"Pipeline"},
-  {id:"appraisal",ic:"🏭",lb:"4 · Technical & Financial",sec:"Pipeline"},
-  {id:"cre",ic:"🎯",lb:"5 · Credit Risk Engine",sec:"Pipeline"},
-  {id:"synthesis",ic:"📝",lb:"6 · Memo & Sanction",sec:"Pipeline"},
-  {id:"servicing",ic:"🛰️",lb:"7 · Disbursal & Monitoring",sec:"Pipeline"},
-  {id:"leverage",ic:"🚀",lb:"The 100× Proof",sec:"Impact"}
+  {id:"overview",ic:"OV",lb:"Case overview",sec:"Case workspace"},
+  {id:"checklist",ic:"DD",lb:"Due diligence",sec:"Case workspace"},
+  {id:"swarm",ic:"AR",lb:"Agent run",sec:"Case workspace"},
+  {id:"bre",ic:"01",lb:"Policy gates",sec:"Credit workflow"},
+  {id:"identity",ic:"02",lb:"Identity & bureau",sec:"Credit workflow"},
+  {id:"collateral",ic:"03",lb:"Security & legal",sec:"Credit workflow"},
+  {id:"appraisal",ic:"04",lb:"Project appraisal",sec:"Credit workflow"},
+  {id:"cre",ic:"05",lb:"Risk & pricing",sec:"Credit workflow"},
+  {id:"synthesis",ic:"06",lb:"Credit memo",sec:"Credit workflow"},
+  {id:"servicing",ic:"07",lb:"Post-sanction",sec:"Credit workflow"},
+  {id:"villain",ic:"CX",lb:"Current process",sec:"Context"},
+  {id:"explainer",ic:"CT",lb:"Control architecture",sec:"Context"},
+  {id:"pillars",ic:"BM",lb:"Industry benchmarks",sec:"Context"},
+  {id:"leverage",ic:"BC",lb:"Business case",sec:"Impact"}
 ];
 let cur=0, running=false;
 function renderNav(){
@@ -742,42 +799,45 @@ function goTo(i){cur=i;renderNav();document.querySelectorAll('.screen').forEach(
 
 /* ============================================================ RENDER ============================================================ */
 function render(){
-  document.getElementById('main').innerHTML=[rVillain(),rExplainer(),rPillars(),rOverview(),rChecklist(),rSwarm(),rBRE(),rIdentity(),rCollateral(),rAppraisal(),rCRE(),rSynthesis(),rServicing(),rLeverage()].join('');
+  document.getElementById('main').innerHTML=[rOverview(),rChecklist(),rSwarm(),rBRE(),rIdentity(),rCollateral(),rAppraisal(),rCRE(),rSynthesis(),rServicing(),rVillain(),rExplainer(),rPillars(),rLeverage()].join('');
   document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));
-  document.getElementById('sc-villain').classList.add('active');
+  document.getElementById('sc-overview').classList.add('active');
   document.getElementById('runBtn').onclick=runSwarm;
   renderNav();
   calcStack();
 }
 
 function rOverview(){return `<div class="screen active" id="sc-overview">
-  <div class="eyebrow">AIF Agent Swarm · 27 agents · 7 phases</div>
-  <h1>From a 90-day compliance labyrinth to a same-day investigation</h1>
-  <div class="sub">One real AIF file — a 4 TPH rice mill in Telangana — run end to end. Every checklist, every bureau, every permit, every subsidy.</div>
-  <div class="grid2">
-    <div class="card"><div class="card-title">📋 The case <span class="chip purple">AIF eligible</span></div>
-      <div class="kv"><span class="k">Borrower</span><span class="v">${CASE.borrower}</span></div>
-      <div class="kv"><span class="k">Project</span><span class="v">${CASE.project}</span></div>
-      <div class="kv"><span class="k">Location</span><span class="v">${CASE.location}</span></div>
-      <div class="kv"><span class="k">Promoter</span><span class="v">${CASE.promoterCat} category · ${CASE.members}</span></div>
-      <div class="kv"><span class="k">Project cost</span><span class="v">${CASE.cost}</span></div>
-      <div class="kv"><span class="k">Loan sought</span><span class="v">${CASE.ask}</span></div>
-      <div class="kv"><span class="k">Scheme stack</span><span class="v">${CASE.scheme}</span></div>
-    </div>
-    <div class="card"><div class="card-title">🔧 The 7-phase pipeline</div>
-      ${PHASES.map(p=>{const n=AGENTS.filter(a=>a.ph===p.id).length;return `<div class="kv"><span class="k mono">Phase ${p.id}</span><span class="v">${p.name} · <span class="muted">${n} agents</span></span></div>`;}).join('')}
-      <div style="margin-top:10px;padding:10px;background:var(--s2);border-radius:8px;font-size:12px;color:var(--mut)">
-        <b style="color:var(--green)">27 agents</b> run in parallel inside your VPC. A human gate on every adverse call.
+  <div class="review-head">
+    <div><div class="eyebrow">Credit appraisal · Maker review</div><h1>Review the three matters that require judgment</h1><div class="sub" style="margin-bottom:0">The file is substantially assembled. Source-linked exceptions are held for officer action; no adverse conclusion has been automated.</div></div>
+    <div class="review-actions"><button class="btn" onclick="openEv('index')">Open evidence</button><button class="btn primary" onclick="goTo(2)">Run investigation</button></div>
+  </div>
+  <div class="risk-strip">
+    <div class="risk-metric"><div class="rl">Facility requested</div><div class="rv">₹72.50 L</div><div class="rn">60.4% of project cost</div></div>
+    <div class="risk-metric"><div class="rl">Post-levy DSCR</div><div class="rv" style="color:var(--green)">1.38×</div><div class="rn">Policy floor 1.25×</div></div>
+    <div class="risk-metric"><div class="rl">Security cover</div><div class="rv">1.51×</div><div class="rn">FSV basis · subject to NOC</div></div>
+    <div class="risk-metric"><div class="rl">Risk / return</div><div class="rv">B · 18.2%</div><div class="rn">Grade B · RAROC above hurdle</div></div>
+  </div>
+  <div class="decision-grid">
+    <div class="card"><div class="card-title">Officer review queue <span class="chip amber">3 open</span></div>
+      <div class="review-list">
+        <div class="review-item"><span class="ri red">01</span><div><div class="rt">Round-tripping pattern requires investigation</div><div class="rd">₹41 L moved A → B → A in three hops within one week. Confidence 0.58 is below the 0.85 policy threshold; the system has not classified fraud.</div></div><span class="ra" onclick="goTo(6)">Review appraisal</span></div>
+        <div class="review-item"><span class="ri amber">02</span><div><div class="rt">Title chain has a four-year documentary gap</div><div class="rd">Link document for 1998–2002 is unavailable. Panel advocate proposes an indemnity bond before mortgage creation.</div></div><span class="ra" onclick="goTo(5)">Open legal</span></div>
+        <div class="review-item"><span class="ri amber">03</span><div><div class="rt">Existing SBI charge must be satisfied</div><div class="rd">CERSAI search shows a prior charge on Survey 247. Obtain SBI NOC and satisfaction before new charge creation.</div></div><span class="ra" onclick="openEv('land7_12')">View source</span></div>
+        <div class="review-item"><span class="ri green">OK</span><div><div class="rt">Core viability remains within policy</div><div class="rd">DSCR, asset cover, expected loss and RAROC pass current policy thresholds after PDS levy and undisclosed EMI adjustments.</div></div><span class="ra" onclick="goTo(8)">Open memo</span></div>
       </div>
     </div>
+    <div class="card"><div class="card-title">Application facts <span class="chip green">AIF eligible</span></div>
+      <div class="fact-grid">
+        <div class="kv"><span class="k">Entity</span><span class="v">Pvt Ltd</span></div><div class="kv"><span class="k">Location</span><span class="v">Karimnagar, TG</span></div>
+        <div class="kv"><span class="k">Project</span><span class="v">4 TPH rice mill</span></div><div class="kv"><span class="k">Members</span><span class="v">520 FPO farmers</span></div>
+        <div class="kv"><span class="k">Project cost</span><span class="v">₹1.20 Cr</span></div><div class="kv"><span class="k">Promoter margin</span><span class="v">₹10.00 L</span></div>
+        <div class="kv"><span class="k">PDS levy</span><span class="v">75%</span></div><div class="kv"><span class="k">Bureau score</span><span class="v">712</span></div>
+      </div>
+      <div class="status-line"><span class="chip green">18 verified</span><span><b>22 checks assembled</b> · 2 conditions precedent · 2 items not applicable</span></div>
+      <button class="btn" style="width:100%;margin-top:10px" onclick="goTo(1)">Open due-diligence checklist</button>
+    </div>
   </div>
-  <div class="grid4" style="margin-top:14px">
-    <div class="card stat"><div class="n" style="color:var(--cyan)">22+</div><div class="l">checklist items auto-assembled</div></div>
-    <div class="card stat"><div class="n" style="color:var(--fab2)">10</div><div class="l">convergent schemes optimised</div></div>
-    <div class="card stat"><div class="n" style="color:var(--amber)">4</div><div class="l">bureaus reconciled</div></div>
-    <div class="card stat"><div class="n" style="color:var(--green)">90d → ~7d</div><div class="l">sanction TAT</div></div>
-  </div>
-  <div class="card hl" style="margin-top:14px"><b>The old cost:</b> ₹1.05–2.75L per file — 4–11% of a ₹25L loan before you take any credit risk. <b style="color:var(--green)">That's not lending; it's a compliance charity.</b> The swarm takes it to ~₹15–25K.</div>
 </div>`;}
 
 function rChecklist(){
@@ -819,7 +879,7 @@ function rBRE(){return `<div class="screen" id="sc-bre">
   <h1>The gates that kill a project before a single ratio is calculated</h1>
   <div class="sub">Scheme convergence, state permissions, promoter eligibility — the knowledge that walks out when your senior officer retires.</div>
   <div class="g21">
-    <div class="card"><div class="card-title">🧮 Scheme Convergence Optimizer <span class="chip cyan">interactive</span></div>
+    <div class="card"><div class="card-title">Scheme convergence <span class="chip cyan">interactive</span></div>
       <div style="font-size:11.5px;color:var(--mut);margin-bottom:8px">Project cost fixed at ₹1.20 Cr. Change the promoter category and watch the optimal stack recompute under the 50% subsidy cap.</div>
       <div class="seg" id="catBtns">
         <button class="btn sm on" data-cat="SC" onclick="setCat('SC')">SC / ST promoter</button>
@@ -829,7 +889,7 @@ function rBRE(){return `<div class="screen" id="sc-bre">
       <table class="tb"><thead><tr><th>Component</th><th style="text-align:right">Amount</th><th style="text-align:right">% cost</th></tr></thead><tbody id="stackBody"></tbody></table>
       <div class="card hl" style="margin-top:10px;font-size:12px" id="stackNote"></div>
     </div>
-    <div class="card"><div class="card-title">👤 Promoter Eligibility</div>
+    <div class="card"><div class="card-title">Promoter eligibility</div>
       <div class="kv"><span class="k">Agri-business vintage</span><span class="v chip green">6 yrs (ITR/GST)</span></div>
       <div class="kv"><span class="k">MCA director status</span><span class="v chip green">Active · no strike-off</span></div>
       <div class="kv"><span class="k">Wilful defaulter list</span><span class="v chip green">No hit</span></div>
@@ -839,7 +899,7 @@ function rBRE(){return `<div class="screen" id="sc-bre">
       <div style="margin-top:8px" class="chip green">BRE GATE → GREEN</div>
     </div>
   </div>
-  <div class="card" style="margin-top:14px"><div class="card-title">🏛️ State Permissions Matrix — Rice Mill <span class="chip amber">Telangana case: 10 verified · 2 pending</span></div>
+  <div class="card" style="margin-top:14px"><div class="card-title">State permissions · Rice mill <span class="chip amber">Telangana: 10 verified · 2 pending</span></div>
     <div class="g12">
       <table class="tb"><thead><tr><th>Permit</th><th>TS</th><th>AP</th><th>PB</th><th>WB</th></tr></thead><tbody>
         ${PERMITS.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')}
@@ -857,14 +917,14 @@ function rIdentity(){return `<div class="screen" id="sc-identity">
   <h1>Four bureaus, Account Aggregator, ULI, and UDIN — no “known CA” shortcuts</h1>
   <div class="sub">Most officers pull one bureau and hope. The swarm reconciles four and verifies every certificate.</div>
   <div class="g21">
-    <div class="card"><div class="card-title">📇 Multi-Bureau Reconciliation <span class="chip cyan">click to reveal</span></div>
+    <div class="card"><div class="card-title">Multi-bureau reconciliation <span class="chip cyan">click to reveal</span></div>
       <table class="tb"><thead><tr><th>Lender</th><th style="text-align:right">CIBIL</th><th style="text-align:right">CRIF</th><th style="text-align:right">Experian</th><th style="text-align:right">Equifax</th></tr></thead><tbody>
         ${BUREAU.map(r=>`<tr><td><b>${r[0]}</b></td>${r.slice(1).map(v=>`<td style="text-align:right" class="mono">${v?('₹'+(v/100000).toFixed(1)+'L'):'<span class="muted2">—</span>'}</td>`).join('')}</tr>`).join('')}
       </tbody></table>
       <button class="btn sm primary" style="margin-top:10px" onclick="revealBureau()">▶ Reconcile & flag undisclosed</button>
       <div id="bureauOut" style="display:none;margin-top:10px"></div>
     </div>
-    <div class="card"><div class="card-title">🔐 UDIN Authenticity</div>
+    <div class="card"><div class="card-title">UDIN authenticity</div>
       <div style="font-size:11.5px;color:var(--mut);margin-bottom:8px">Every CA / valuer / legal certificate checked on the ICAI portal — genuineness, type, validity, no blacklist.</div>
       <div class="kv"><span class="k mono">Net-worth cert</span><span class="v chip green">✓ UDIN active</span></div>
       <div class="kv"><span class="k mono">3-yr financials</span><span class="v chip green">✓ verified</span></div>
@@ -875,7 +935,7 @@ function rIdentity(){return `<div class="screen" id="sc-identity">
     </div>
   </div>
   <div class="grid2" style="margin-top:14px">
-    <div class="card"><div class="card-title">🔗 Account Aggregator + ULI — the consent journey</div>
+    <div class="card"><div class="card-title">Account Aggregator + ULI · Consent journey</div>
       <div class="bar"><span class="lbl">SMS consent link sent</span><div class="tr"><i style="width:100%;background:var(--green)"></i></div><span class="val">✓</span></div>
       <div class="bar"><span class="lbl">Aadhaar OTP approval</span><div class="tr"><i style="width:100%;background:var(--green)"></i></div><span class="val">✓</span></div>
       <div class="bar"><span class="lbl">12-mo statements · 3 banks</span><div class="tr"><i style="width:100%;background:var(--cyan)"></i></div><span class="val">pulled</span></div>
@@ -883,7 +943,7 @@ function rIdentity(){return `<div class="screen" id="sc-identity">
       <div class="bar"><span class="lbl">ITR via IT Dept</span><div class="tr"><i style="width:100%;background:var(--cyan)"></i></div><span class="val">pulled</span></div>
       <div style="margin-top:8px;font-size:12px;color:var(--green)"><b>Under 10 minutes</b>, zero human touch — vs 2–3 weeks and 5 follow-up calls.</div>
     </div>
-    <div class="card"><div class="card-title">🪪 KYC & Entity</div>
+    <div class="card"><div class="card-title">KYC & entity</div>
       <div class="kv"><span class="k">Aadhaar e-KYC</span><span class="v chip green">✓ OTP</span></div>
       <div class="kv"><span class="k">PAN (NSDL)</span><span class="v chip green">✓ ${CASE.pan}</span></div>
       <div class="kv"><span class="k">GST (GSTN)</span><span class="v chip green">✓ active</span></div>
@@ -899,7 +959,7 @@ function rCollateral(){return `<div class="screen" id="sc-collateral">
   <h1>A 30-year title chain in 30 minutes — the panel advocate reviews, doesn't retype</h1>
   <div class="sub">Land title · legal search · valuation · CERSAI. The two long poles of the old process, parallelised.</div>
   <div class="grid2">
-    <div class="card"><div class="card-title">📜 Land title chain <span class="chip purple">Neo4j</span></div>
+    <div class="card"><div class="card-title">Land title chain <span class="chip purple">graph review</span></div>
       <div class="kv"><span>1988</span><span>Mutation A → B ✓</span></div>
       <div class="kv"><span>1995</span><span>Mutation B → C ✓</span></div>
       <div class="kv" style="color:var(--amber)"><span>1998–2002</span><span>⚠ GAP — link document missing</span></div>
@@ -908,7 +968,7 @@ function rCollateral(){return `<div class="screen" id="sc-collateral">
       <div class="kv"><span>2025</span><span>Current: Sri Lakshmi Agro ✓</span></div>
       <div style="margin-top:8px"><span class="chip amber">Panel advocate: indemnity bond required for 1998–2002 gap</span> <span class="ev" onclick="openEv('land7_12')" style="font-size:11px">view 7/12 record</span></div>
     </div>
-    <div class="card"><div class="card-title">🔍 Legal search</div>
+    <div class="card"><div class="card-title">Legal search</div>
       <div class="kv"><span>Encumbrance (30-yr)</span><span>1 satisfied mortgage (SBI 2015)</span></div>
       <div class="kv"><span>e-Courts</span><span class="chip green">no litigation</span></div>
       <div class="kv"><span>DRT / NCLT</span><span class="chip green">no proceedings</span></div>
@@ -918,7 +978,7 @@ function rCollateral(){return `<div class="screen" id="sc-collateral">
     </div>
   </div>
   <div class="grid2" style="margin-top:14px">
-    <div class="card"><div class="card-title">💰 Valuation <span class="chip purple">IGR + Sentinel-2</span></div>
+    <div class="card"><div class="card-title">Valuation <span class="chip purple">IGR + GIS</span></div>
       <div class="kv"><span>Guidance value (IGR)</span><span>₹450/sq.ft</span></div>
       <div class="kv"><span>Avg comparable (3 deeds)</span><span>₹487/sq.ft</span></div>
       <div class="kv"><span>GIS adj (road/mandi access)</span><span>+12%</span></div>
@@ -926,7 +986,7 @@ function rCollateral(){return `<div class="screen" id="sc-collateral">
       <div class="kv"><span>Forced sale value (80%)</span><span>₹378/sq.ft</span></div>
       <div class="kv"><span><b>Asset cover</b></span><span style="color:var(--green)"><b>1.51× ✓</b></span></div>
     </div>
-    <div class="card"><div class="card-title">🔏 CERSAI & charge</div>
+    <div class="card"><div class="card-title">CERSAI & charge</div>
       <div class="kv"><span>CERSAI pre-search</span><span class="chip amber">⚠ SBI charge on survey 247</span></div>
       <div class="kv"><span>Action</span><span>NOC + satisfaction required</span></div>
       <div class="kv"><span>Form I (charge creation)</span><span class="chip cyan">auto-populated</span></div>
@@ -941,7 +1001,7 @@ function rAppraisal(){return `<div class="screen" id="sc-appraisal">
   <h1>Rice-mill economics the swarm actually understands</h1>
   <div class="sub">Recovery ratio, by-products, PDS levy, undisclosed loans, optimal subsidy — modelled, not guessed.</div>
   <div class="grid2">
-    <div class="card"><div class="card-title">🏭 DPR & techno-economic (rice mill)</div>
+    <div class="card"><div class="card-title">DPR & techno-economic review</div>
       <div class="kv"><span>Capacity</span><span>4 TPH · custom milling</span></div>
       <div class="kv"><span>Rice recovery ratio</span><span>68%</span></div>
       <div class="kv"><span>By-products (bran/husk)</span><span>monetised in model</span></div>
@@ -950,7 +1010,7 @@ function rAppraisal(){return `<div class="screen" id="sc-appraisal">
       <div class="kv"><span><b>DSCR (post-levy)</b></span><span style="color:var(--green)"><b>1.38× ✓</b></span></div>
       <div class="kv"><span>IRR · break-even</span><span>17.4% · Yr-4</span></div>
     </div>
-    <div class="card"><div class="card-title">📊 Financial analysis <span class="chip purple">Perfios + Isolation Forest</span></div>
+    <div class="card"><div class="card-title">Financial analysis <span class="chip purple">BSA + anomaly review</span></div>
       <div class="kv"><span>Bank turnover ↔ GST</span><span class="chip green">reconciled</span></div>
       <div class="kv"><span>GST ↔ ITR variance</span><span class="chip green">3.6% · in tol</span></div>
       <div class="kv" style="color:var(--amber)"><span>⚠ Unexplained credit</span><span>₹45k/mo · unknown source</span></div>
@@ -959,7 +1019,7 @@ function rAppraisal(){return `<div class="screen" id="sc-appraisal">
       <div class="kv"><span>Cheque returns 12m</span><span class="chip green">0.4%</span></div>
     </div>
   </div>
-  <div class="card" style="margin-top:14px"><div class="card-title">🌾 Subsidy optimization — the money screen <span class="chip cyan">50% cap enforced</span></div>
+  <div class="card" style="margin-top:14px"><div class="card-title">Subsidy convergence <span class="chip cyan">50% cap enforced</span></div>
     <div class="bar"><span class="lbl">AIF — 3% interest subvention</span><div class="tr"><i style="width:100%;background:var(--fab)"></i></div><span class="val">≤₹2 Cr</span></div>
     <div class="bar"><span class="lbl">PMFME capital subsidy</span><div class="tr"><i style="width:28%;background:var(--cyan)"></i></div><span class="val">₹10.0 L</span></div>
     <div class="bar"><span class="lbl">PMEGP margin money (SC)</span><div class="tr"><i style="width:35%;background:var(--green)"></i></div><span class="val">₹12.5 L</span></div>
@@ -979,7 +1039,7 @@ function rCRE(){return `<div class="screen" id="sc-cre">
     <div class="card"><div class="card-title" style="justify-content:center">RAROC</div><div class="gauge" style="--v:73;--gc:var(--green)"><div class="in" style="font-size:15px">18.2%</div></div><div style="text-align:center;font-size:11px;color:var(--mut)">> 15% hurdle ✓</div></div>
   </div>
   <div class="grid2" style="margin-top:14px">
-    <div class="card"><div class="card-title">💵 Risk-based pricing waterfall</div>
+    <div class="card"><div class="card-title">Risk-based pricing waterfall</div>
       <div class="kv"><span>Base rate</span><span class="mono">9.50%</span></div>
       <div class="kv"><span>+ Risk premium (PD bucket B)</span><span class="mono" style="color:var(--amber)">+2.25%</span></div>
       <div class="kv"><span>+ Term premium (7-yr)</span><span class="mono" style="color:var(--amber)">+0.50%</span></div>
@@ -987,7 +1047,7 @@ function rCRE(){return `<div class="screen" id="sc-cre">
       <div class="kv"><span><b>Effective rate to borrower</b></span><span class="mono" style="color:var(--green)"><b>9.25%</b></span></div>
       <div class="kv"><span>Expected loss (PD×LGD×EAD)</span><span class="mono">₹0.60 L</span></div>
     </div>
-    <div class="card"><div class="card-title">⚔️ Adversarial agent — argues for decline</div>
+    <div class="card"><div class="card-title">Independent downside review</div>
       <div style="font-size:12px;color:#c9d4e6">
         <p style="margin-bottom:7px"><b style="color:var(--red)">Attack:</b> “Seasonal paddy + 75% PDS levy compresses margin — DSCR won't hold.”</p>
         <p style="margin-bottom:7px"><b style="color:var(--green)">Survives →</b> structured with 12-mo moratorium + by-product income; DSCR 1.38× at levy price.</p>
@@ -1004,10 +1064,10 @@ function rSynthesis(){const secs=["Borrower & promoter profile","Project overvie
   <h1>A 12-section credit memo — every number source-linked</h1>
   <div class="sub">Assembled from all 27 agents in 5 minutes. The committee reviews a finished memo, not raw documents.</div>
   <div class="g12">
-    <div class="card"><div class="card-title">📝 Underwriting memo <span class="chip green">auto-generated</span></div>
+    <div class="card"><div class="card-title">Underwriting memo <span class="chip green">draft ready</span></div>
       ${secs.map((t,i)=>`<div class="memo-sec"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="t">${t}</span><span class="chip ${i===11?'purple':'green'}">${i===11?'★':'✓'}</span></div>`).join('')}
     </div>
-    <div class="card"><div class="card-title">📜 Sanction letter <span class="chip purple">draft</span></div>
+    <div class="card"><div class="card-title">Sanction terms <span class="chip purple">draft</span></div>
       <div class="kv"><span>Decision</span><span class="chip green">SANCTION w/ conditions</span></div>
       <div class="kv"><span>Amount</span><span>₹72.50 L</span></div>
       <div class="kv"><span>Rate</span><span>9.25% (post-AIF)</span></div>
@@ -1020,7 +1080,7 @@ function rSynthesis(){const secs=["Borrower & promoter profile","Project overvie
       <div style="margin-top:10px;padding:9px;background:var(--s2);border-radius:8px;font-size:11px;color:var(--mut)">Scheme condition: MIDH/state subsidy released against completion certificate + geo-photos; promoter brings ₹10 L margin upfront.</div>
     </div>
   </div>
-  <div class="card" style="margin-top:14px"><div class="card-title">🖋️ Maker–Checker · Delegation of Powers <span class="chip cyan">four-eyes · RBI-aligned</span></div>
+  <div class="card" style="margin-top:14px"><div class="card-title">Maker–Checker · Delegation of Powers <span class="chip cyan">four-eyes control</span></div>
     <div class="mc">
       <div class="mstep done"><div class="role">Recommender</div><div class="who">AI Swarm</div><div class="stt"><span class="chip green">✓ memo assembled</span></div></div>
       <div class="marrow">→</div>
@@ -1032,7 +1092,7 @@ function rSynthesis(){const secs=["Borrower & promoter profile","Project overvie
     </div>
     <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap;align-items:center">
       <button class="btn primary" onclick="toast('✓ <b>Recommended for sanction</b> forwarded to Checker (S. Menon). Maker action logged to the audit trail with your ID and timestamp.')">✓ Recommend for sanction</button>
-      <button class="btn" onclick="openEv('sanction')">🔍 Open sanction memo · sources</button>
+      <button class="btn" onclick="openEv('sanction')">Open sanction memo · sources</button>
       <button class="btn" onclick="toast('↩ <b>Returned to appraisal</b> with a query. The relevant agent re-runs and the memo re-assembles — the loop is logged.')">↩ Return with query</button>
       <span style="font-size:11px;color:var(--mut);margin-left:auto">AI recommends · <b style="color:var(--tx)">a named human decides</b> · every action hash-logged</span>
     </div>
@@ -1045,7 +1105,7 @@ function rServicing(){return `<div class="screen" id="sc-servicing">
   <h1>Disbursement control, covenant monitoring, geo-tagged progress</h1>
   <div class="sub">The swarm doesn't stop at sanction — it guards every tranche and watches for trouble before the 90-day line.</div>
   <div class="grid2">
-    <div class="card"><div class="card-title">💸 Disbursement control <span class="chip amber">tranche-1 held</span></div>
+    <div class="card"><div class="card-title">Disbursement control <span class="chip amber">tranche-1 held</span></div>
       <div class="kv"><span>Promoter margin brought in</span><span class="chip amber">⏳ pending</span></div>
       <div class="kv"><span>Mortgage deed registered</span><span class="chip amber">⏳ pending</span></div>
       <div class="kv"><span>CERSAI charge registered</span><span class="chip red">✕ SBI NOC first</span></div>
@@ -1054,7 +1114,7 @@ function rServicing(){return `<div class="screen" id="sc-servicing">
       <div class="kv"><span>Geo-photo (pre-construction)</span><span class="chip green">✓ tagged</span></div>
       <div style="margin-top:8px;font-size:11px;color:var(--mut)">Auto-releases the moment all CPs turn green — no manual chase.</div>
     </div>
-    <div class="card"><div class="card-title">📈 Covenant monitoring + geo-tag</div>
+    <div class="card"><div class="card-title">Covenant monitoring + geo-tag</div>
       <button class="btn sm primary" onclick="revealEWS()">▶ Reveal early-warning signals</button>
       <div id="ewsOut" style="display:none;margin-top:10px">
         <div class="card wf" style="font-size:11.5px">
@@ -1071,7 +1131,7 @@ function rServicing(){return `<div class="screen" id="sc-servicing">
     </div>
   </div>
   <div class="grid2" style="margin-top:14px">
-    <div class="card"><div class="card-title">🏦 LMS — repayment schedule <span class="chip cyan">amortization · ₹72.5L · 9.25% · 7yr</span></div>
+    <div class="card"><div class="card-title">LMS · Repayment schedule <span class="chip cyan">₹72.5L · 9.25% · 7yr</span></div>
       <table class="emi"><thead><tr><th>Period</th><th>Opening</th><th>Interest</th><th>Principal</th><th>EMI</th><th>Closing</th></tr></thead><tbody>
         <tr class="mora"><td>M1–12 · moratorium</td><td>72.50</td><td>0.56/mo</td><td>0.00</td><td>0.56</td><td>72.50</td></tr>
         <tr><td>M13</td><td>72.50</td><td>0.56</td><td>0.76</td><td>1.32</td><td>71.74</td></tr>
@@ -1082,7 +1142,7 @@ function rServicing(){return `<div class="screen" id="sc-servicing">
       </tbody></table>
       <div style="margin-top:8px;font-size:10.5px;color:var(--mut)">₹ in lakh · illustrative. Interest serviced through the 12-month moratorium; EMI ₹1.32L begins M13. AIF 3% subvention credited quarterly to the borrower's account per scheme rules.</div>
     </div>
-    <div class="card"><div class="card-title">💸 Disbursement tranches <span class="chip amber">milestone-linked · CP-gated</span></div>
+    <div class="card"><div class="card-title">Disbursement tranches <span class="chip amber">milestone-linked · CP-gated</span></div>
       <div class="trrow"><span class="tl">T1 · 30% · ₹21.75L</span><div class="tbar"><i style="left:0;width:30%;background:var(--amber);color:#04140d">held · CPs pending</i></div></div>
       <div class="trrow"><span class="tl">T2 · 40% · ₹29.00L</span><div class="tbar"><i style="left:30%;width:40%;background:var(--s3);color:var(--mut);border:1px dashed var(--line2)">at 50% construction (geo-verified)</i></div></div>
       <div class="trrow"><span class="tl">T3 · 30% · ₹21.75L</span><div class="tbar"><i style="left:70%;width:30%;background:var(--s3);color:var(--mut);border:1px dashed var(--line2)">on commissioning + subsidy claim</i></div></div>
