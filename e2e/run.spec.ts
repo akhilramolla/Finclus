@@ -113,3 +113,24 @@ test("Version 3 policy workspace has rules, sources, and history",async({page})=
   await noOverflow(page); expect(issues).toEqual([]);
 });
 
+test("Version 3 preserves detailed underwriting drill-downs",async({page})=>{
+  const issues=diagnostics(page); await page.goto(`${baseURL}/3`);
+  await page.getByRole("button",{name:/Open priority case/}).click();
+  await page.getByRole("button",{name:/Start investigation/}).click();
+  await page.getByRole("button",{name:/Run 7 workstreams/}).click();
+  await expect(page.getByRole("button",{name:"More"})).toBeEnabled({timeout:10_000});
+  await page.getByRole("button",{name:"More"}).click();
+  await expect(page.locator(".check-item")).toHaveCount(14);
+  await page.getByRole("button",{name:"27-agent topology"}).click();
+  await expect(page.locator(".agent-card")).toHaveCount(27);
+  await page.getByRole("button",{name:"Risk & memo"}).click();
+  await expect(page.locator(".risk-card")).toHaveCount(4);
+  await expect(page.getByText("Source-linked credit memo")).toBeVisible();
+  await page.getByRole("button",{name:"Evidence room"}).click();
+  await expect(page.locator(".evidence-card")).toHaveCount(5);
+  await page.getByRole("button",{name:"Post-sanction reference"}).click();
+  await expect(page.getByText("Separate reference scenario.")).toBeVisible();
+  await expect(page.getByText("Watchlist · not SMA")).toBeVisible();
+  await noOverflow(page); expect(issues).toEqual([]);
+});
+
